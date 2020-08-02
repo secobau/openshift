@@ -11,7 +11,7 @@
    ```
    Modify the secret removing all unnecessary metada and load it again:
    ```
-   oc get secret -n quay-enterprise pull-secret.yaml
+   oc apply -n quay-enterprise -f pull-secret.yaml
    
    
    ```

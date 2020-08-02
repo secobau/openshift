@@ -18,6 +18,19 @@
 1. Please customize the following configuration before applying it:
 
    `oc apply -f https://raw.githubusercontent.com/secobau/openshift/master/install/quayEcosystem.yaml`
+1. You will need a specific certificate for the registry:
+
+   ```
+   dir=~/environment/quay/tls
+   certs=~/environment/certs
+   mkdir --parents $dir
+   EmailAddress=sebastian.colomar@gmail.com
+   docker run -it --rm -v ~/.aws/credentials:/root/.aws/credentials -v $certs:/etc/letsencrypt certbot/dns-route53 certonly -n --dns-route53 --agree-tos --email $EmailAddress -d registry.apps.$ClusterName.$DomainName
+   sudo chown $USER. -R $certs
+   cp $certs/live/registry.apps.$ClusterName.$DomainName/*.pem $dir
+   
+   
+   ```
 1. Create the necessary secrets:
 
    ```
@@ -27,7 +40,7 @@
    oc create secret generic registry-quay --from-literal=database-username=quay --from-literal=database-password=yyy --from-literal=database-root-password=uuu --from-literal=database-name=quay
    oc create secret generic registry-redis --from-literal=password=xxx
    oc create secret generic registry-s3 --from-literal=accessKey=xxx --from-literal=secretKey=yyy
-   oc create secret tls registry-ssl --key=privkey.pem --cert=fullchain.pem
+   oc create secret tls registry-ssl --key=$dir/privkey.pem --cert=$dir/fullchain.pem
    
    
    ```

@@ -34,7 +34,7 @@
 1. Create the necessary secrets:
 
    ```
-   oc create secret generic registry-admin --from-literal=superuser-username=xxx --from-literal=superuser-password=yyy --from-literal=superuser-email=sebastian.colomar@gmail.com
+   oc create secret generic registry-admin --from-literal=superuser-username=admin --from-literal=superuser-password=yyy --from-literal=superuser-email=sebastian.colomar@gmail.com
    oc create secret generic registry-clair --from-literal=database-username=clair --from-literal=database-password=yyy --from-literal=database-root-password=uuu --from-literal=database-name=clair
    oc create secret generic registry-config --from-literal=config-app-password=xxx
    oc create secret generic registry-quay --from-literal=database-username=quay --from-literal=database-password=yyy --from-literal=database-root-password=uuu --from-literal=database-name=quay

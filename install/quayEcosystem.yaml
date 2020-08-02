@@ -6,23 +6,23 @@ metadata:
 spec:
   clair:
     database:
-      credentialsSecretName: registry-clair-database
+      credentialsSecretName: registry-clair
       imagePullSecretName: registry-pull-secret
       volumeSize: 20Gi
     enabled: true
     imagePullSecretName: registry-pull-secret
-    sslCertificatesSecretName: registry-ssl-bundle
+    sslCertificatesSecretName: registry-ssl
   quay:
-    configSecretName: registry-config-app
+    configSecretName: registry-config
     database:
-      credentialsSecretName: registry-quay-database
+      credentialsSecretName: registry-quay
       imagePullSecretName: registry-pull-secret
       volumeSize: 20Gi
     enableRepoMirroring: true
     externalAccess:
       hostname: registry.apps.openshift.sebastian-colomar.es
       tls:
-        secretName: registry-ssl-bundle
+        secretName: registry-ssl
         termination: passthrough
       type: Route
     imagePullSecretName: registry-pull-secret
@@ -35,5 +35,5 @@ spec:
     superusers:
     - registry-admin
   redis:
-    credentialsSecretName: registry-redis-password
+    credentialsSecretName: registry-redis
     imagePullSecretName: registry-pull-secret

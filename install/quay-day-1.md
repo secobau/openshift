@@ -4,20 +4,9 @@
 1. Install the Red Hat Quay Operator
 1. Load credentials to obtain Quay:
    
-   ```
-   oc get secret -n openshift-config pull-secret -o yaml > registry-pull-secret.yaml
-   
-   
-   ```
+   `oc get secret -n openshift-config pull-secret -o yaml > registry-pull-secret.yaml`
    Modify the secret removing all unnecessary metada and load it again:
-   ```
-   oc apply -n quay-enterprise -f registry-pull-secret.yaml
-   
-   
-   ```
-1. Please customize the following configuration before applying it:
-
-   `oc apply -f https://raw.githubusercontent.com/secobau/openshift/master/install/quayEcosystem.yaml`
+   `oc apply -n quay-enterprise -f registry-pull-secret.yaml`
 1. You will need a specific certificate for the registry:
 
    ```
@@ -44,4 +33,6 @@
    
    
    ```
-   
+1. Please customize the following configuration before applying it:
+
+   `oc apply -f https://raw.githubusercontent.com/secobau/openshift/master/install/quayEcosystem.yaml`   

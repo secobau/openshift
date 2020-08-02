@@ -1,0 +1,54 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: QuayEcosystem
+metadata:
+  name: xxx
+spec:
+  clair:
+    enabled: false
+    # imagePullSecretName: redhat-pull-secret
+    # updateInterval: "60m"
+    # database:
+        # connectionParameters:
+          # sslmode: require
+          # sslcert: ca-bundle.crt
+          # sslkey: ca-bundle.key
+          # sslrootcert: ca.crt
+        # connect_timeout: '20'
+  quay:
+    configSecretName: quay-config-app
+    database:
+      credentialsSecretName: quay-database-credential
+      volumeSize: 10Gi
+    deploymentStrategy: RollingUpdate
+    enableRepoMirroring: true
+    externalAccess:
+      hostname: quay.apps.openshift.sebastian-colomar.es
+      tls:
+        secretName: custom-quay-ssl
+        termination: passthrough
+      type: Route
+    imagePullSecretName: redhat-pull-secret
+    livenessProbe:
+      httpGet:
+        path: /health/instance
+        port: 8443
+        scheme: HTTPS
+      initialDelaySeconds: 120
+    readinessProbe:
+      httpGet:
+        path: /health/instance
+        port: 8443
+        scheme: HTTPS
+      initialDelaySeconds: 10
+    redis:
+      credentialsSecretName: redis-password
+    registryBackends:
+      -
+        credentialsSecretName: s3-credentials
+        name: s3
+        s3:
+          bucketName: xxx
+    skipSetup: false
+    superuserCredentialsSecretName: quay-admin
+    superusers:
+      - xxx

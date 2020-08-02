@@ -5,7 +5,9 @@
 1. Load credentials to obtain Quay:
    
    `oc get secret -n openshift-config pull-secret -o yaml > registry-pull-secret.yaml`
+   
    Modify the secret removing all unnecessary metada and load it again:
+   
    `oc apply -n quay-enterprise -f registry-pull-secret.yaml`
 1. You will need a specific certificate for the registry:
 

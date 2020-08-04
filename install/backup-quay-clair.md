@@ -2,7 +2,7 @@
 
 ```
 oc exec -it $( oc get pod -n quay-enterprise | awk /quay-postgresql/'{ print $1 }' ) -n quay-enterprise sh
-
+sh$
 date=$( date +%F_%H%M%S )
 dir=/var/lib/pgsql/data/backup/postgres/
 mkdir -p $dir/$date

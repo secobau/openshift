@@ -5,6 +5,7 @@
 1. https://docs.openshift.com/container-platform/4.4/authentication/remove-kubeadmin.html
 1. https://docs.openshift.com/container-platform/4.4/security/encrypting-etcd.html
 1. https://docs.openshift.com/container-platform/4.4/backup_and_restore/backing-up-etcd.html
+   1. https://github.com/secobau/openshift/blob/master/install/backup-ocp.md
 1. https://docs.openshift.com/container-platform/4.4/updating/updating-cluster.html
 1. https://docs.openshift.com/container-platform/4.4/backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.html
 1. https://docs.openshift.com/container-platform/4.4/logging/config/cluster-logging-configuring-about.html

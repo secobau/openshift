@@ -9,7 +9,7 @@ mkdir -p $dir/$date
 pg_dump quay > $dir/$date/quay.sql
 pg_dumpall > $dir/$date/quay_all.sql
 cd $dir
-tar -C $dir cf $dir/quay-$date.tar $date
+tar -C $dir -cf $dir/quay-$date.tar $date
 gzip $dir/quay-$date.tar
 rm -rf $dir/$date
 

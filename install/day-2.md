@@ -8,6 +8,7 @@
    1. https://github.com/secobau/openshift/blob/master/install/backup-ocp.md
 1. https://docs.openshift.com/container-platform/4.4/updating/updating-cluster.html
 1. https://docs.openshift.com/container-platform/4.4/backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.html
+1. https://docs.openshift.com/container-platform/4.5/installing/install_config/configuring-private-cluster.html
 1. https://docs.openshift.com/container-platform/4.4/logging/config/cluster-logging-configuring-about.html
 1. https://docs.openshift.com/container-platform/4.4/logging/cluster-logging-deploying.html
 1. https://docs.openshift.com/container-platform/4.4/logging/cluster-logging-eventrouter.html

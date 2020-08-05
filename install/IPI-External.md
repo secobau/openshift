@@ -106,7 +106,7 @@ In order to substitute the self-signed certificate by a valid one:
   ```
   2. Create a ConfigMap that includes the certificate authority used to sign the new certificate:
   ```bash
-  oc create configmap custom-ca --from-file=ca-bundle.crt=$dir/tls/chain.pem -n openshift-config
+  oc create configmap custom-ca --from-file=ca-bundle.crt=$dir/tls/fullchain.pem -n openshift-config
 
 
   ```
@@ -118,7 +118,7 @@ In order to substitute the self-signed certificate by a valid one:
   ```
   4. Create a secret that contains the wildcard certificate and key:
   ```bash
-  oc create secret tls certificate --cert=$dir/tls/cert.pem --key=$dir/tls/privkey.pem -n openshift-ingress
+  oc create secret tls certificate --cert=$dir/tls/fullchain.pem --key=$dir/tls/privkey.pem -n openshift-ingress
 
 
   ```
@@ -143,7 +143,7 @@ In order to substitute the self-signed certificate by a valid one:
   ```
   2. Create a secret that contains the certificate and key in the openshift-config namespace.
   ```bash
-  oc create secret tls certificate --cert=$dir/tls/cert.pem --key=$dir/tls/privkey.pem -n openshift-config
+  oc create secret tls certificate --cert=$dir/tls/fullchain.pem --key=$dir/tls/privkey.pem -n openshift-config
 
 
   ```

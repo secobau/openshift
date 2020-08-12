@@ -2,9 +2,9 @@ apiVersion: machine.openshift.io/v1beta1
 kind: MachineSet
 metadata:
   annotations:
-    machine.openshift.io/GPU: GPU_SIZE
-    machine.openshift.io/memoryMb: MEMORY_SIZE
-    machine.openshift.io/vCPU: CPU_SIZE
+    machine.openshift.io/GPU: 'GPU_SIZE'
+    machine.openshift.io/memoryMb: 'MEMORY_SIZE'
+    machine.openshift.io/vCPU: 'CPU_SIZE'
   name: CLUSTER_NAME-CLUSTER_ID-ROLE-ZONE
   namespace: openshift-machine-api
   labels:

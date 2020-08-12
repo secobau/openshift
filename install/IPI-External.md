@@ -26,7 +26,7 @@ ssh-add $HOME/.ssh/id_rsa
 ```
 Choose a version number:
 ```bash
-version=4.5.2
+version=4.5.4
 
 
 ```

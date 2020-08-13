@@ -1,7 +1,7 @@
 apiVersion: machine.openshift.io/v1beta1
 kind: Machine
 metadata:
-  name: CLUSTER_NAME-CLUSTER_ID-ROLE-X
+  name: CLUSTER_NAME-CLUSTER_ID-ROLE-ZONE
   namespace: openshift-machine-api
   finalizers:
     - machine.machine.openshift.io

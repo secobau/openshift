@@ -16,7 +16,7 @@ spec:
   providerSpec:
     value:
       userDataSecret:
-        name: master-user-data
+        name: <ROLE>-user-data
       placement:
         availabilityZone: <ZONE>
         region: <REGION>

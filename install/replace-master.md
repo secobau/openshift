@@ -14,5 +14,4 @@ It is also normal that etcd ClusterOperator is in a degraded state with one memb
    ```
 1. Edit the Machine Count for the new master MachineSet from 0 to 1.
 1. Monitor the pods for all projects until the cluster is stable. If kube-apiserver Pod is not ready you can delete it and retry.
-You need to wait until the etcd ClusterOperator is healthy.
 1. Repeat the process with the next master Machine you want to substitute.

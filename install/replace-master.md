@@ -3,8 +3,9 @@
 1. Create a new master MachineSet based on this template:
    * https://github.com/secobau/openshift/blob/master/install/machineSet.yaml
    
-   Remember to place the MachineSet in the correct availability zone.
+   Be careful to place the MachineSet in the correct availability zone.
    There should normally be only one master Machine per availability zone.
+   This means that there will normally be only master MachineSet per availability zone.
 1. Delete the master Machine you want to replace.
 1. Monitor the pods for all projects until the cluster is stable.
 Only etcd-quorum-guard Pod should remain in a pending state. 

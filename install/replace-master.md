@@ -10,7 +10,7 @@ It is also normal that etcd ClusterOperator is in a degraded state with one memb
    
    ```
    etcdctl member list
-   etcdctl member remove xxx   
+   etcdctl member remove <ID>   
    ```
 1. Edit the Machine Count for the new master MachineSet from 0 to 1.
 1. Monitor the pods for all projects until the cluster is stable.

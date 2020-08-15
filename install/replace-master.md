@@ -17,4 +17,5 @@ It is also normal that etcd ClusterOperator is in a degraded state with one memb
 1. Repeat the process with the next master Machine you want to substitute.
    Be careful to place the new MachineSet in the correct availability zone.
    There should normally be only one master Machine per availability zone.
-   You will ideally use three MachineSets placed in three different availability zones to ensure the quorum.
+   You will ideally use 3 MachineSets placed in 3 different availability zones to ensure the quorum.
+   This is considered best practice.

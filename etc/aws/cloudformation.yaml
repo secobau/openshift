@@ -285,12 +285,12 @@ Resources:
   VPC:
     Properties:
       CidrBlock: !Ref VPCCidrBlock
+      EnableDnsSupport: true
+      EnableDnsHostnames: true   
     Type: "AWS::EC2::VPC"
 
   VPCGatewayAttachment:
     Properties:
-      EnableDnsSupport: true
-      EnableDnsHostnames: true   
       InternetGatewayId: !Ref InternetGateway
       VpcId: !Ref VPC
     Type: AWS::EC2::VPCGatewayAttachment

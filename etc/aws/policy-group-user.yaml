@@ -102,7 +102,7 @@ Resources:
           - ec2:CreateVpcEndpoint
           - ec2:ModifySubnetAttribute
           - ec2:ModifyVpcAttribute
-          Resource: arn:aws:ec2:*:*:instance/*
+          Resource: arn:aws:ec2:*:*:*
         Version: '2012-10-17'
       PolicyName: OCP_Installer_EC2_network
     Type: AWS::IAM::Policy
@@ -142,7 +142,7 @@ Resources:
           - elasticloadbalancing:RegisterInstancesWithLoadBalancer
           - elasticloadbalancing:RegisterTargets
           - elasticloadbalancing:SetLoadBalancerPoliciesOfListener
-          Resource: arn:aws:elasticloadbalancing:*:*:loadbalancer/*
+          Resource: '*'
         Version: '2012-10-17'
       PolicyName: OCP_Installer_ELB
     Type: AWS::IAM::Policy
@@ -176,7 +176,7 @@ Resources:
           - iam:RemoveRoleFromInstanceProfile
           - iam:SimulatePrincipalPolicy
           - iam:TagRole
-          Resource: arn:aws:iam::*:*
+          Resource: arn:aws:iam:::*
         Version: '2012-10-17'
       PolicyName: OCP_Installer_IAM
     Type: AWS::IAM::Policy
@@ -239,7 +239,7 @@ Resources:
           - s3:PutBucketAcl
           - s3:PutBucketTagging
           - s3:PutEncryptionConfiguration
-          Resource: arn:aws:s3:::*
+          Resource: '*'
         Version: '2012-10-17'
       PolicyName: OCP_Installer_S3_install
     Type: AWS::IAM::Policy
@@ -357,7 +357,7 @@ Resources:
           - s3:HeadBucket
           - s3:ListBucketMultipartUploads
           - s3:AbortMultipartUpload
-          Resource: arn:aws:s3:::*
+          Resource: '*'
         Version: '2012-10-17'
       PolicyName: OCP_Installer_Manifest
     Type: AWS::IAM::Policy

@@ -176,7 +176,7 @@ Resources:
           - iam:RemoveRoleFromInstanceProfile
           - iam:SimulatePrincipalPolicy
           - iam:TagRole
-          Resource: arn:aws:iam:*:*:*
+          Resource: arn:aws:iam::*:*
         Version: '2012-10-17'
       PolicyName: OCP_Installer_IAM
     Type: AWS::IAM::Policy

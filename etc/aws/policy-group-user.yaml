@@ -1,0 +1,369 @@
+#########################################################################
+#      Copyright (C) 2020        Sebastian Francisco Colomar Bauza      #
+#      SPDX-License-Identifier:  GPL-2.0-only                           #
+#########################################################################
+
+---
+
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: This template creates a policy, a group and a user to install OCP
+
+Resources:
+
+  Group:
+    Type: AWS::IAM::Group
+
+# Required EC2 permissions for installation
+  PolicyEC2install:
+    DependsOn: Group
+    Properties:
+      Groups:
+      - !Ref Group
+      PolicyDocument:
+        Statement:
+        - 
+          Effect: Allow
+          Action:
+          - ec2:AllocateAddress
+          - ec2:AssociateAddress
+          - ec2:AuthorizeSecurityGroupEgress
+          - ec2:AuthorizeSecurityGroupIngress
+          - ec2:CopyImage
+          - ec2:CreateNetworkInterface
+          - ec2:AttachNetworkInterface
+          - ec2:CreateSecurityGroup
+          - ec2:CreateTags
+          - ec2:CreateVolume
+          - ec2:DeleteSecurityGroup
+          - ec2:DeleteSnapshot
+          - ec2:DeregisterImage
+          - ec2:DescribeAccountAttributes
+          - ec2:DescribeAddresses
+          - ec2:DescribeAvailabilityZones
+          - ec2:DescribeDhcpOptions
+          - ec2:DescribeImages
+          - ec2:DescribeInstanceAttribute
+          - ec2:DescribeInstanceCreditSpecifications
+          - ec2:DescribeInstances
+          - ec2:DescribeInternetGateways
+          - ec2:DescribeKeyPairs
+          - ec2:DescribeNatGateways
+          - ec2:DescribeNetworkAcls
+          - ec2:DescribeNetworkInterfaces
+          - ec2:DescribePrefixLists
+          - ec2:DescribeRegions
+          - ec2:DescribeRouteTables
+          - ec2:DescribeSecurityGroups
+          - ec2:DescribeSubnets
+          - ec2:DescribeTags
+          - ec2:DescribeVolumes
+          - ec2:DescribeVpcAttribute
+          - ec2:DescribeVpcClassicLink
+          - ec2:DescribeVpcClassicLinkDnsSupport
+          - ec2:DescribeVpcEndpoints
+          - ec2:DescribeVpcs
+          - ec2:GetEbsDefaultKmsKeyId
+          - ec2:ModifyInstanceAttribute
+          - ec2:ModifyNetworkInterfaceAttribute
+          - ec2:ReleaseAddress
+          - ec2:RevokeSecurityGroupEgress
+          - ec2:RevokeSecurityGroupIngress
+          - ec2:RunInstances
+          - ec2:TerminateInstances
+          Resource: arn:aws:ec2:*:*:instance/*
+        Version: '2012-10-17'
+      PolicyName: OCP_Installer_EC2_install
+    Type: AWS::IAM::Policy
+
+# If you use an existing VPC, your account does not require these permissions for creating network resources
+# Required permissions for creating network resources during installation
+  PolicyEC2network:
+    DependsOn: Group
+    Properties:
+      Groups:
+      - !Ref Group
+      PolicyDocument:
+        Statement:
+        - 
+          Effect: Allow
+          Action:
+          - ec2:AssociateDhcpOptions
+          - ec2:AssociateRouteTable
+          - ec2:AttachInternetGateway
+          - ec2:CreateDhcpOptions
+          - ec2:CreateInternetGateway
+          - ec2:CreateNatGateway
+          - ec2:CreateRoute
+          - ec2:CreateRouteTable
+          - ec2:CreateSubnet
+          - ec2:CreateVpc
+          - ec2:CreateVpcEndpoint
+          - ec2:ModifySubnetAttribute
+          - ec2:ModifyVpcAttribute
+          Resource: arn:aws:ec2:*:*:instance/*
+        Version: '2012-10-17'
+      PolicyName: OCP_Installer_EC2_network
+    Type: AWS::IAM::Policy
+
+# Required Elasticloadbalancing permissions for installation
+  PolicyELB:
+    DependsOn: Group
+    Properties:
+      Groups:
+      - !Ref Group
+      PolicyDocument:
+        Statement:
+        - 
+          Effect: Allow
+          Action:
+          - elasticloadbalancing:AddTags
+          - elasticloadbalancing:ApplySecurityGroupsToLoadBalancer
+          - elasticloadbalancing:AttachLoadBalancerToSubnets
+          - elasticloadbalancing:ConfigureHealthCheck
+          - elasticloadbalancing:CreateListener
+          - elasticloadbalancing:CreateLoadBalancer
+          - elasticloadbalancing:CreateLoadBalancerListeners
+          - elasticloadbalancing:CreateTargetGroup
+          - elasticloadbalancing:DeleteLoadBalancer
+          - elasticloadbalancing:DeregisterInstancesFromLoadBalancer
+          - elasticloadbalancing:DeregisterTargets
+          - elasticloadbalancing:DescribeInstanceHealth
+          - elasticloadbalancing:DescribeListeners
+          - elasticloadbalancing:DescribeLoadBalancerAttributes
+          - elasticloadbalancing:DescribeLoadBalancers
+          - elasticloadbalancing:DescribeTags
+          - elasticloadbalancing:DescribeTargetGroupAttributes
+          - elasticloadbalancing:DescribeTargetHealth
+          - elasticloadbalancing:ModifyLoadBalancerAttributes
+          - elasticloadbalancing:ModifyTargetGroup
+          - elasticloadbalancing:ModifyTargetGroupAttributes
+          - elasticloadbalancing:RegisterInstancesWithLoadBalancer
+          - elasticloadbalancing:RegisterTargets
+          - elasticloadbalancing:SetLoadBalancerPoliciesOfListener
+          Resource: arn:aws:elasticloadbalancing:*:*:loadbalancer/*
+        Version: '2012-10-17'
+      PolicyName: OCP_Installer_ELB
+    Type: AWS::IAM::Policy
+
+# Required IAM permissions for installation
+  PolicyIAM:
+    DependsOn: Group
+    Properties:
+      Groups:
+      - !Ref Group
+      PolicyDocument:
+        Statement:
+        - 
+          Effect: Allow
+          Action:
+          - iam:AddRoleToInstanceProfile
+          - iam:CreateInstanceProfile
+          - iam:CreateRole
+          - iam:DeleteInstanceProfile
+          - iam:DeleteRole
+          - iam:DeleteRolePolicy
+          - iam:GetInstanceProfile
+          - iam:GetRole
+          - iam:GetRolePolicy
+          - iam:GetUser
+          - iam:ListInstanceProfilesForRole
+          - iam:ListRoles
+          - iam:ListUsers
+          - iam:PassRole
+          - iam:PutRolePolicy
+          - iam:RemoveRoleFromInstanceProfile
+          - iam:SimulatePrincipalPolicy
+          - iam:TagRole
+          Resource: arn:aws:iam:*:*:*
+        Version: '2012-10-17'
+      PolicyName: OCP_Installer_IAM
+    Type: AWS::IAM::Policy
+
+# Required Route53 permissions for installation
+  PolicyRoute53:
+    DependsOn: Group
+    Properties:
+      Groups:
+      - !Ref Group
+      PolicyDocument:
+        Statement:
+        - 
+          Effect: Allow
+          Action:
+          - route53:ChangeResourceRecordSets
+          - route53:ChangeTagsForResource
+          - route53:CreateHostedZone
+          - route53:DeleteHostedZone
+          - route53:GetChange
+          - route53:GetHostedZone
+          - route53:ListHostedZones
+          - route53:ListHostedZonesByName
+          - route53:ListResourceRecordSets
+          - route53:ListTagsForResource
+          - route53:UpdateHostedZoneComment
+          Resource: arn:aws:route53:::*
+        Version: '2012-10-17'
+      PolicyName: OCP_Installer_Route53
+    Type: AWS::IAM::Policy
+
+# Required S3 permissions for installation
+  PolicyS3install:
+    DependsOn: Group
+    Properties:
+      Groups:
+      - !Ref Group
+      PolicyDocument:
+        Statement:
+        - 
+          Effect: Allow
+          Action:
+          - s3:CreateBucket
+          - s3:DeleteBucket
+          - s3:GetAccelerateConfiguration
+          - s3:GetBucketAcl
+          - s3:GetBucketCors
+          - s3:GetBucketLocation
+          - s3:GetBucketLogging
+          - s3:GetBucketObjectLockConfiguration
+          - s3:GetBucketReplication
+          - s3:GetBucketRequestPayment
+          - s3:GetBucketTagging
+          - s3:GetBucketVersioning
+          - s3:GetBucketWebsite
+          - s3:GetEncryptionConfiguration
+          - s3:GetLifecycleConfiguration
+          - s3:GetReplicationConfiguration
+          - s3:ListBucket
+          - s3:PutBucketAcl
+          - s3:PutBucketTagging
+          - s3:PutEncryptionConfiguration
+          Resource: arn:aws:s3:::*
+        Version: '2012-10-17'
+      PolicyName: OCP_Installer_S3_install
+    Type: AWS::IAM::Policy
+
+# S3 permissions that cluster Operators require
+  PolicyS3operator:
+    DependsOn: Group
+    Properties:
+      Groups:
+      - !Ref Group
+      PolicyDocument:
+        Statement:
+        - 
+          Effect: Allow
+          Action:
+          - s3:DeleteObject
+          - s3:GetObject
+          - s3:GetObjectAcl
+          - s3:GetObjectTagging
+          - s3:GetObjectVersion
+          - s3:PutObject
+          - s3:PutObjectAcl
+          - s3:PutObjectTagging
+          Resource: arn:aws:s3:::*
+        Version: '2012-10-17'
+      PolicyName: OCP_Installer_S3_operator
+    Type: AWS::IAM::Policy
+
+# Required permissions to delete base cluster resources
+  PolicyDelete:
+    DependsOn: Group
+    Properties:
+      Groups:
+      - !Ref Group
+      PolicyDocument:
+        Statement:
+        - 
+          Effect: Allow
+          Action:
+          - autoscaling:DescribeAutoScalingGroups
+          - ec2:DeleteNetworkInterface
+          - ec2:DeleteVolume
+          - elasticloadbalancing:DeleteTargetGroup
+          - elasticloadbalancing:DescribeTargetGroups
+          - iam:DeleteAccessKey
+          - iam:DeleteUser
+          - iam:ListInstanceProfiles
+          - iam:ListRolePolicies
+          - iam:ListUserPolicies
+          - s3:DeleteObject
+          - s3:ListBucketVersions
+          - tag:GetResources
+          Resource: '*'
+        Version: '2012-10-17'
+      PolicyName: OCP_Installer_Delete
+    Type: AWS::IAM::Policy
+
+# If you use an existing VPC, your account does not require these permissions for deleting network resources
+# Required permissions to delete network resources
+  PolicyDeleteNetwork:
+   DependsOn: Group
+    Properties:
+      Groups:
+      - !Ref Group
+      PolicyDocument:
+        Statement:
+        - 
+          Effect: Allow
+          Action:
+          - ec2:DeleteDhcpOptions
+          - ec2:DeleteInternetGateway
+          - ec2:DeleteNatGateway
+          - ec2:DeleteRoute
+          - ec2:DeleteRouteTable
+          - ec2:DeleteSubnet
+          - ec2:DeleteVpc
+          - ec2:DeleteVpcEndpoints
+          - ec2:DetachInternetGateway
+          - ec2:DisassociateRouteTable
+          - ec2:ReplaceRouteTableAssociation
+          Resource: arn:aws:ec2:::*
+        Version: '2012-10-17'
+      PolicyName: OCP_Installer_Delete_Network
+    Type: AWS::IAM::Policy
+
+# Additional IAM and S3 permissions that are required to create manifests
+  PolicyManifest:
+    DependsOn: Group
+    Properties:
+      Groups:
+      - !Ref Group
+      PolicyDocument:
+        Statement:
+        - 
+          Effect: Allow
+          Action:
+          - iam:CreateAccessKey
+          - iam:CreateUser
+          - iam:DeleteAccessKey
+          - iam:DeleteUser
+          - iam:DeleteUserPolicy
+          - iam:GetUserPolicy
+          - iam:ListAccessKeys
+          - iam:PutUserPolicy
+          - iam:TagUser
+          - iam:GetUserPolicy
+          - iam:ListAccessKeys
+          Resource: arn:aws:iam:::*
+        - 
+          Effect: Allow
+          Action:
+          - s3:PutBucketPublicAccessBlock
+          - s3:GetBucketPublicAccessBlock
+          - s3:PutLifecycleConfiguration
+          - s3:HeadBucket
+          - s3:ListBucketMultipartUploads
+          - s3:AbortMultipartUpload
+          Resource: arn:aws:s3:::*
+        Version: '2012-10-17'
+      PolicyName: OCP_Installer_Manifest
+    Type: AWS::IAM::Policy
+
+  User:
+    DependsOn: Group
+    Properties:
+      Groups:
+      - !Ref Group
+    Type: AWS::IAM::User

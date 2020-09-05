@@ -108,7 +108,7 @@ Resources:
     Type: AWS::IAM::Policy
 
 # Required Elasticloadbalancing permissions for installation
-  PolicyELB:
+  PolicyELB1:
     DependsOn: Group
     Properties:
       Groups:
@@ -122,13 +122,29 @@ Resources:
           - elasticloadbalancing:ApplySecurityGroupsToLoadBalancer
           - elasticloadbalancing:AttachLoadBalancerToSubnets
           - elasticloadbalancing:ConfigureHealthCheck
-          - elasticloadbalancing:CreateListener
           - elasticloadbalancing:CreateLoadBalancer
           - elasticloadbalancing:CreateLoadBalancerListeners
-          - elasticloadbalancing:CreateTargetGroup
           - elasticloadbalancing:DeleteLoadBalancer
           - elasticloadbalancing:DeregisterInstancesFromLoadBalancer
-          - elasticloadbalancing:DeregisterTargets
+          - elasticloadbalancing:ModifyLoadBalancerAttributes
+          - elasticloadbalancing:RegisterInstancesWithLoadBalancer
+          - elasticloadbalancing:SetLoadBalancerPoliciesOfListener
+          Resource: arn:aws:elasticloadbalancing:*:*:loadbalancer/*
+        Version: '2012-10-17'
+      PolicyName: OCP_Installer_ELB1
+    Type: AWS::IAM::Policy
+
+# Required Elasticloadbalancing permissions for installation
+  PolicyELB2:
+    DependsOn: Group
+    Properties:
+      Groups:
+      - !Ref Group
+      PolicyDocument:
+        Statement:
+        - 
+          Effect: Allow
+          Action:
           - elasticloadbalancing:DescribeInstanceHealth
           - elasticloadbalancing:DescribeListeners
           - elasticloadbalancing:DescribeLoadBalancerAttributes
@@ -136,15 +152,34 @@ Resources:
           - elasticloadbalancing:DescribeTags
           - elasticloadbalancing:DescribeTargetGroupAttributes
           - elasticloadbalancing:DescribeTargetHealth
-          - elasticloadbalancing:ModifyLoadBalancerAttributes
-          - elasticloadbalancing:ModifyTargetGroup
-          - elasticloadbalancing:ModifyTargetGroupAttributes
-          - elasticloadbalancing:RegisterInstancesWithLoadBalancer
-          - elasticloadbalancing:RegisterTargets
-          - elasticloadbalancing:SetLoadBalancerPoliciesOfListener
           Resource: '*'
         Version: '2012-10-17'
-      PolicyName: OCP_Installer_ELB
+      PolicyName: OCP_Installer_ELB2
+    Type: AWS::IAM::Policy
+
+# Required Elasticloadbalancing permissions for installation
+  PolicyELB3:
+    DependsOn: Group
+    Properties:
+      Groups:
+      - !Ref Group
+      PolicyDocument:
+        Statement:
+        - 
+          Effect: Allow
+          Action:
+          - elasticloadbalancing:CreateListener
+          - elasticloadbalancing:CreateTargetGroup
+          - elasticloadbalancing:DeregisterTargets
+          - elasticloadbalancing:ModifyTargetGroup
+          - elasticloadbalancing:ModifyTargetGroupAttributes
+          - elasticloadbalancing:RegisterTargets
+          Resource: 
+          - arn:aws:elasticloadbalancing:*:*:targetgroup/*/*
+          - arn:aws:elasticloadbalancing:*:*:loadbalancer/app/*/*
+          - arn:aws:elasticloadbalancing:*:*:loadbalancer/net/*/*
+        Version: '2012-10-17'
+      PolicyName: OCP_Installer_ELB3
     Type: AWS::IAM::Policy
 
 # Required IAM permissions for installation

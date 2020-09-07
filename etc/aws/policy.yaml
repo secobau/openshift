@@ -13,6 +13,9 @@ Description: This template creates a policy, a role and a user to install OCP
 Resources:
 
   Group:
+    DependsOn: ManagedPolicy
+    ManagedPolicyArns:
+    - !Ref ManagedPolicy
     Type: AWS::IAM::Group
 
   ManagedPolicy:

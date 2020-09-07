@@ -269,7 +269,6 @@ Resources:
 
 # Required Route53 permissions for installation
   PolicyRoute53:
-    DepedsOn: Group
     Properties:
       PolicyDocument:
         Statement:

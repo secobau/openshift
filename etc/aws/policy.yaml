@@ -124,20 +124,32 @@ Resources:
         - 
           Effect: Allow
           Action:
-          - ec2:AssociateDhcpOptions
-          - ec2:AssociateRouteTable
-          - ec2:AttachInternetGateway
-          - ec2:CreateDhcpOptions
-          - ec2:CreateInternetGateway
-          - ec2:CreateNatGateway
-          - ec2:CreateRoute
-          - ec2:CreateRouteTable
-          - ec2:CreateSubnet
-          - ec2:CreateVpc
-          - ec2:CreateVpcEndpoint
-          - ec2:ModifySubnetAttribute
-          - ec2:ModifyVpcAttribute
-          Resource: arn:aws:ec2:*:*:*
+          - "ec2:CreateDhcpOptions"
+          - "ec2:CreateInternetGateway"
+          - "ec2:CreateNatGateway"
+          - "ec2:CreateRoute"
+          - "ec2:CreateSubnet"          
+          - "ec2:CreateVpc"
+          - "ec2:CreateVpcEndpoint"
+          Resource:
+          - "arn:aws:ec2:*:*:dhcp-options/*"
+          - "arn:aws:ec2:*:*:internet-gateway/*"
+          - "arn:aws:ec2:*:*:natgateway/*"
+          - "arn:aws:ec2:*:*:route-table/*"
+          - "arn:aws:ec2:*:*:security-group/*"
+          - "arn:aws:ec2:*:*:subnet/*"
+          - "arn:aws:ec2:*:*:vpc/*"
+          - "arn:aws:ec2:*:*:vpc-endpoint/*"
+        - 
+          Effect: Allow
+          Action:
+          - "ec2:AssociateDhcpOptions",
+          - "ec2:CreateRouteTable",
+          - "ec2:AttachInternetGateway",
+          - "ec2:ModifyVpcAttribute",
+          - "ec2:AssociateRouteTable",
+          - "ec2:ModifySubnetAttribute"
+          Resource: '*'
         - 
           Effect: Allow
           Action:
@@ -191,29 +203,44 @@ Resources:
           - iam:GetRolePolicy
           - iam:GetUser
           - iam:ListInstanceProfilesForRole
-          - iam:ListRoles
-          - iam:ListUsers
           - iam:PassRole
           - iam:PutRolePolicy
           - iam:RemoveRoleFromInstanceProfile
           - iam:SimulatePrincipalPolicy
           - iam:TagRole
-          Resource: arn:aws:iam:::*
+          Resource:
+          - "arn:aws:iam::*:group/*"
+          - "arn:aws:iam::*:instance-profile/*"
+          - "arn:aws:iam::*:role/*"
+          - "arn:aws:iam::*:user/*"
+        - 
+          Effect: Allow
+          Action:
+          - iam:ListRoles
+          - iam:ListUsers
+          Resource: '*'
         - 
           Effect: Allow
           Action:
           - route53:ChangeResourceRecordSets
           - route53:ChangeTagsForResource
-          - route53:CreateHostedZone
           - route53:DeleteHostedZone
           - route53:GetChange
           - route53:GetHostedZone
-          - route53:ListHostedZones
-          - route53:ListHostedZonesByName
           - route53:ListResourceRecordSets
           - route53:ListTagsForResource
           - route53:UpdateHostedZoneComment
-          Resource: arn:aws:route53:::*
+          Resource:
+          - "arn:aws:route53:::change/*"
+          - "arn:aws:route53:::healthcheck/*"
+          - "arn:aws:route53:::hostedzone/*"
+        - 
+          Effect: Allow
+          Action:
+          - route53:CreateHostedZone
+          - route53:ListHostedZones
+          - route53:ListHostedZonesByName
+          Resource: '*'
         - 
           Effect: Allow
           Action:

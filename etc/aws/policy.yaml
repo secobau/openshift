@@ -143,11 +143,11 @@ Resources:
         - 
           Effect: Allow
           Action:
-          - "ec2:AssociateDhcpOptions",
-          - "ec2:CreateRouteTable",
-          - "ec2:AttachInternetGateway",
-          - "ec2:ModifyVpcAttribute",
-          - "ec2:AssociateRouteTable",
+          - "ec2:AssociateDhcpOptions"
+          - "ec2:CreateRouteTable"
+          - "ec2:AttachInternetGateway"
+          - "ec2:ModifyVpcAttribute"
+          - "ec2:AssociateRouteTable"
           - "ec2:ModifySubnetAttribute"
           Resource: '*'
         - 
@@ -289,11 +289,11 @@ Resources:
           - iam:ListUserPolicies
           - s3:ListBucketVersions
           Resource:
-          - "arn:aws:iam::*:instance-profile/*",
-          - "arn:aws:iam::*:user/*",
-          - "arn:aws:iam::*:role/*",
-          - "arn:aws:s3:::*",
-          - "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*",
+          - "arn:aws:iam::*:instance-profile/*"
+          - "arn:aws:iam::*:user/*"
+          - "arn:aws:iam::*:role/*"
+          - "arn:aws:s3:::*"
+          - "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*"
           - "arn:aws:ec2:*:*:volume/*"
         - 
           Effect: Allow

@@ -264,7 +264,7 @@ Resources:
           - s3:PutBucketAcl
           - s3:PutBucketTagging
           - s3:PutEncryptionConfiguration
-          Resource: '*'
+          Resource: 'arn:aws:s3:::*'
         - 
           Effect: Allow
           Action:
@@ -276,39 +276,61 @@ Resources:
           - s3:PutObject
           - s3:PutObjectAcl
           - s3:PutObjectTagging
-          Resource: arn:aws:s3:::*
+          Resource: arn:aws:s3:::*/*
         - 
           Effect: Allow
           Action:
-          - autoscaling:DescribeAutoScalingGroups
-          - ec2:DeleteNetworkInterface
           - ec2:DeleteVolume
           - elasticloadbalancing:DeleteTargetGroup
-          - elasticloadbalancing:DescribeTargetGroups
           - iam:DeleteAccessKey
           - iam:DeleteUser
           - iam:ListInstanceProfiles
           - iam:ListRolePolicies
           - iam:ListUserPolicies
-          - s3:DeleteObject
           - s3:ListBucketVersions
+          Resource:
+          - "arn:aws:iam::*:instance-profile/*",
+          - "arn:aws:iam::*:user/*",
+          - "arn:aws:iam::*:role/*",
+          - "arn:aws:s3:::*",
+          - "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*",
+          - "arn:aws:ec2:*:*:volume/*"
+        - 
+          Effect: Allow
+          Action:
+          - autoscaling:DescribeAutoScalingGroups
+          - ec2:DeleteNetworkInterface
+          - elasticloadbalancing:DescribeTargetGroups
           - tag:GetResources
           Resource: '*'
         - 
           Effect: Allow
           Action:
+          - s3:DeleteObject
+          Resource: arn:aws:s3:::*/*
+        - 
+          Effect: Allow
+          Action:
           - ec2:DeleteDhcpOptions
           - ec2:DeleteInternetGateway
-          - ec2:DeleteNatGateway
           - ec2:DeleteRoute
           - ec2:DeleteRouteTable
+          - ec2:DeleteVpcEndpoints
+          Resource:
+          - "arn:aws:ec2:*:*:route-table/*"
+          - "arn:aws:ec2:*:*:vpc-endpoint/*"
+          - "arn:aws:ec2:*:*:dhcp-options/*"
+          - "arn:aws:ec2:*:*:internet-gateway/*"
+        - 
+          Effect: Allow
+          Action:
+          - ec2:DeleteNatGateway
           - ec2:DeleteSubnet
           - ec2:DeleteVpc
-          - ec2:DeleteVpcEndpoints
           - ec2:DetachInternetGateway
           - ec2:DisassociateRouteTable
           - ec2:ReplaceRouteTableAssociation
-          Resource: arn:aws:ec2:::*
+          Resource: '*'
         - 
           Effect: Allow
           Action:
@@ -321,18 +343,24 @@ Resources:
           - iam:ListAccessKeys
           - iam:PutUserPolicy
           - iam:TagUser
-          - iam:GetUserPolicy
-          - iam:ListAccessKeys
-          Resource: arn:aws:iam:::*
+          Resource: arn:aws:iam::*:user/*
         - 
           Effect: Allow
           Action:
-          - s3:PutBucketPublicAccessBlock
           - s3:GetBucketPublicAccessBlock
-          - s3:PutLifecycleConfiguration
-          - s3:HeadBucket
           - s3:ListBucketMultipartUploads
+          - s3:PutBucketPublicAccessBlock
+          - s3:PutLifecycleConfiguration
+          Resource: arn:aws:s3:::*
+        - 
+          Effect: Allow
+          Action:
           - s3:AbortMultipartUpload
+          Resource: arn:aws:s3:::*/*
+        - 
+          Effect: Allow
+          Action:
+          - s3:HeadBucket
           Resource: '*'
         Version: '2012-10-17'
     Type: AWS::IAM::ManagedPolicy

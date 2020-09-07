@@ -13,12 +13,32 @@ Description: This template creates a policy, a role and a user to install OCP
 Resources:
 
   Group:
-    DependsOn: ManagedPolicy
+    DependsOn:
+    - PolicyDelete
+    - PolicyDeleteNetwork
+    - PolicyEC2install
+    - PolicyEC2network
+    - PolicyELB
+    - PolicyIAM
+    - PolicyManifest
+    - PolicyRoute53
+    - PolicyS3install
+    - PolicyS3operator
     ManagedPolicyArns:
-    - !Ref ManagedPolicy
+    - !Ref PolicyDelete
+    - !Ref PolicyDeleteNetwork
+    - !Ref PolicyEC2install
+    - !Ref PolicyEC2network
+    - !Ref PolicyELB
+    - !Ref PolicyIAM
+    - !Ref PolicyManifest
+    - !Ref PolicyRoute53
+    - !Ref PolicyS3install
+    - !Ref PolicyS3operator
     Type: AWS::IAM::Group
 
-  ManagedPolicy:
+# Required EC2 permissions for installation
+  PolicyEC2install:
     Properties:
       PolicyDocument:
         Statement:
@@ -121,6 +141,15 @@ Resources:
           - ec2:ModifyNetworkInterfaceAttribute
           - ec2:ReleaseAddress
           Resource: '*'
+        Version: '2012-10-17'
+    Type: AWS::IAM::ManagedPolicy
+
+# If you use an existing VPC, your account does not require these permissions for creating network resources
+# Required permissions for creating network resources during installation
+  PolicyEC2network:
+    Properties:
+      PolicyDocument:
+        Statement:
         - 
           Effect: Allow
           Action:
@@ -150,6 +179,14 @@ Resources:
           - "ec2:AssociateRouteTable"
           - "ec2:ModifySubnetAttribute"
           Resource: '*'
+        Version: '2012-10-17'
+    Type: AWS::IAM::ManagedPolicy
+
+# Required Elasticloadbalancing permissions for installation
+  PolicyELB:
+    Properties:
+      PolicyDocument:
+        Statement:
         - 
           Effect: Allow
           Action:
@@ -189,6 +226,14 @@ Resources:
           - arn:aws:elasticloadbalancing:*:*:targetgroup/*/*
           - arn:aws:elasticloadbalancing:*:*:loadbalancer/app/*/*
           - arn:aws:elasticloadbalancing:*:*:loadbalancer/net/*/*
+        Version: '2012-10-17'
+    Type: AWS::IAM::ManagedPolicy
+
+# Required IAM permissions for installation
+  PolicyIAM:
+    Properties:
+      PolicyDocument:
+        Statement:
         - 
           Effect: Allow
           Action:
@@ -219,6 +264,15 @@ Resources:
           - iam:ListRoles
           - iam:ListUsers
           Resource: '*'
+        Version: '2012-10-17'
+    Type: AWS::IAM::ManagedPolicy
+
+# Required Route53 permissions for installation
+  PolicyRoute53:
+    DepedsOn: Group
+    Properties:
+      PolicyDocument:
+        Statement:
         - 
           Effect: Allow
           Action:
@@ -241,6 +295,14 @@ Resources:
           - route53:ListHostedZones
           - route53:ListHostedZonesByName
           Resource: '*'
+        Version: '2012-10-17'
+    Type: AWS::IAM::ManagedPolicy
+
+# Required S3 permissions for installation
+  PolicyS3install:
+    Properties:
+      PolicyDocument:
+        Statement:
         - 
           Effect: Allow
           Action:
@@ -265,6 +327,14 @@ Resources:
           - s3:PutBucketTagging
           - s3:PutEncryptionConfiguration
           Resource: 'arn:aws:s3:::*'
+        Version: '2012-10-17'
+    Type: AWS::IAM::ManagedPolicy
+
+# S3 permissions that cluster Operators require
+  PolicyS3operator:
+    Properties:
+      PolicyDocument:
+        Statement:
         - 
           Effect: Allow
           Action:
@@ -277,6 +347,14 @@ Resources:
           - s3:PutObjectAcl
           - s3:PutObjectTagging
           Resource: arn:aws:s3:::*/*
+        Version: '2012-10-17'
+    Type: AWS::IAM::ManagedPolicy
+
+# Required permissions to delete base cluster resources
+  PolicyDelete:
+    Properties:
+      PolicyDocument:
+        Statement:
         - 
           Effect: Allow
           Action:
@@ -308,6 +386,15 @@ Resources:
           Action:
           - s3:DeleteObject
           Resource: arn:aws:s3:::*/*
+        Version: '2012-10-17'
+    Type: AWS::IAM::ManagedPolicy
+
+# If you use an existing VPC, your account does not require these permissions for deleting network resources
+# Required permissions to delete network resources
+  PolicyDeleteNetwork:
+    Properties:
+      PolicyDocument:
+        Statement:
         - 
           Effect: Allow
           Action:
@@ -331,6 +418,14 @@ Resources:
           - ec2:DisassociateRouteTable
           - ec2:ReplaceRouteTableAssociation
           Resource: '*'
+        Version: '2012-10-17'
+    Type: AWS::IAM::ManagedPolicy
+
+# Additional IAM and S3 permissions that are required to create manifests
+  PolicyManifest:
+    Properties:
+      PolicyDocument:
+        Statement:
         - 
           Effect: Allow
           Action:

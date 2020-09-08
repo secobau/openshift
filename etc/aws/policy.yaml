@@ -109,6 +109,13 @@ Resources:
         - 
           Effect: Allow
           Action:
+          - "lambda:CreateFunction"
+          - "lambda:GetFunction"
+          - "lambda:ListFunctions"
+          Resource: '*'
+        - 
+          Effect: Allow
+          Action:
           - "ec2:CreateDhcpOptions"
           - "ec2:CreateInternetGateway"
           - "ec2:CreateNatGateway"
@@ -326,6 +333,11 @@ Resources:
     Properties:
       PolicyDocument:
         Statement:
+        - 
+          Effect: Allow
+          Action:
+          - "lambda:DeleteFunction"
+          Resource: '*'
         - 
           Effect: Allow
           Action:

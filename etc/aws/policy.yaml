@@ -24,17 +24,18 @@ Resources:
     - PolicyRoute53
     - PolicyS3install
     - PolicyS3operator
-    ManagedPolicyArns:
-    - !Ref PolicyDelete
-    - !Ref PolicyDeleteNetwork
-    - !Ref PolicyEC2install
-    - !Ref PolicyEC2network
-    - !Ref PolicyELB
-    - !Ref PolicyIAM
-    - !Ref PolicyManifest
-    - !Ref PolicyRoute53
-    - !Ref PolicyS3install
-    - !Ref PolicyS3operator
+    Properties:
+      ManagedPolicyArns:
+      - !Ref PolicyDelete
+      - !Ref PolicyDeleteNetwork
+      - !Ref PolicyEC2install
+      - !Ref PolicyEC2network
+      - !Ref PolicyELB
+      - !Ref PolicyIAM
+      - !Ref PolicyManifest
+      - !Ref PolicyRoute53
+      - !Ref PolicyS3install
+      - !Ref PolicyS3operator
     Type: AWS::IAM::Group
 
 # Required EC2 permissions for installation

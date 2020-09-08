@@ -57,52 +57,7 @@ Resources:
           - ec2:RevokeSecurityGroupIngress
           - ec2:RunInstances
           - ec2:TerminateInstances
-          Resource: 
-          - "arn:aws:ec2:*:*:capacity-reservation/*"
-          - "arn:aws:ec2:*:*:client-vpn-endpoint/*"
-          - "arn:aws:ec2:*:*:dedicated-host/*"
-          - "arn:aws:ec2:*:*:dhcp-options/*"
-          - "arn:aws:ec2:*:*:egress-only-internet-gateway/*"
-          - "arn:aws:ec2:*:*:elastic-gpu/*"
-          - "arn:aws:ec2:*:*:export-instance-task/*"
-          - "arn:aws:ec2:*:*:fleet/*"
-          - "arn:aws:ec2:*::fpga-image/*"
-          - "arn:aws:ec2:*:*:key-pair/*"
-          - "arn:aws:ec2:*::image/*"
-          - "arn:aws:ec2:*:*:instance/*"
-          - "arn:aws:ec2:*:*:internet-gateway/*"
-          - "arn:aws:ec2:*:*:launch-template/*"
-          - "arn:aws:ec2:*:*:local-gateway/*"
-          - "arn:aws:ec2:*:*:local-gateway-route-table/*"
-          - "arn:aws:ec2:*:*:local-gateway-route-table-virtual-interface-group-association/*"
-          - "arn:aws:ec2:*:*:local-gateway-route-table-vpc-association/*"
-          - "arn:aws:ec2:*:*:local-gateway-virtual-interface/*"
-          - "arn:aws:ec2:*:*:local-gateway-virtual-interface-group/*"
-          - "arn:aws:ec2:*:*:natgateway/*"
-          - "arn:aws:ec2:*:*:network-acl/*"
-          - "arn:aws:ec2:*:*:network-interface/*"
-          - "arn:aws:ec2:*:*:placement-group/*"
-          - "arn:aws:ec2:*:*:reserved-instances/*"
-          - "arn:aws:ec2:*:*:route-table/*"
-          - "arn:aws:ec2:*:*:security-group/*"
-          - "arn:aws:ec2:*::snapshot/*"
-          - "arn:aws:ec2:*:*:spot-instances-request/*"
-          - "arn:aws:ec2:*:*:subnet/*"
-          - "arn:aws:ec2:*:*:traffic-mirror-filter/*"
-          - "arn:aws:ec2:*:*:traffic-mirror-session/*"
-          - "arn:aws:ec2:*:*:traffic-mirror-target/*"
-          - "arn:aws:ec2:*:*:transit-gateway/*"
-          - "arn:aws:ec2:*:*:transit-gateway-attachment/*"
-          - "arn:aws:ec2:*:*:transit-gateway-multicast-domain/*"
-          - "arn:aws:ec2:*:*:transit-gateway-route-table/*"
-          - "arn:aws:ec2:*:*:volume/*"
-          - "arn:aws:ec2:*:*:vpc/*"
-          - "arn:aws:ec2:*:*:vpc-endpoint/*"
-          - "arn:aws:ec2:*:*:vpc-endpoint-service/*"
-          - "arn:aws:ec2:*:*:vpc-flow-log/*"
-          - "arn:aws:ec2:*:*:vpn-connection/*"
-          - "arn:aws:ec2:*:*:vpn-gateway/*"
-          - "arn:aws:elastic-inference:*:*:elastic-inference-accelerator/*"
+          Resource: '*'
         - 
           Effect: Allow
           Action:
@@ -160,15 +115,7 @@ Resources:
           - "ec2:CreateSubnet"          
           - "ec2:CreateVpc"
           - "ec2:CreateVpcEndpoint"
-          Resource:
-          - "arn:aws:ec2:*:*:dhcp-options/*"
-          - "arn:aws:ec2:*:*:internet-gateway/*"
-          - "arn:aws:ec2:*:*:natgateway/*"
-          - "arn:aws:ec2:*:*:route-table/*"
-          - "arn:aws:ec2:*:*:security-group/*"
-          - "arn:aws:ec2:*:*:subnet/*"
-          - "arn:aws:ec2:*:*:vpc/*"
-          - "arn:aws:ec2:*:*:vpc-endpoint/*"
+          Resource: '*'
         - 
           Effect: Allow
           Action:
@@ -201,7 +148,7 @@ Resources:
           - elasticloadbalancing:ModifyLoadBalancerAttributes
           - elasticloadbalancing:RegisterInstancesWithLoadBalancer
           - elasticloadbalancing:SetLoadBalancerPoliciesOfListener
-          Resource: arn:aws:elasticloadbalancing:*:*:loadbalancer/*
+          Resource: '*'
         - 
           Effect: Allow
           Action:
@@ -222,10 +169,7 @@ Resources:
           - elasticloadbalancing:ModifyTargetGroup
           - elasticloadbalancing:ModifyTargetGroupAttributes
           - elasticloadbalancing:RegisterTargets
-          Resource: 
-          - arn:aws:elasticloadbalancing:*:*:targetgroup/*/*
-          - arn:aws:elasticloadbalancing:*:*:loadbalancer/app/*/*
-          - arn:aws:elasticloadbalancing:*:*:loadbalancer/net/*/*
+          Resource: '*'
         Version: '2012-10-17'
     Type: AWS::IAM::ManagedPolicy
 
@@ -253,11 +197,7 @@ Resources:
           - iam:RemoveRoleFromInstanceProfile
           - iam:SimulatePrincipalPolicy
           - iam:TagRole
-          Resource:
-          - "arn:aws:iam::*:group/*"
-          - "arn:aws:iam::*:instance-profile/*"
-          - "arn:aws:iam::*:role/*"
-          - "arn:aws:iam::*:user/*"
+          Resource: '*'
         - 
           Effect: Allow
           Action:
@@ -283,10 +223,7 @@ Resources:
           - route53:ListResourceRecordSets
           - route53:ListTagsForResource
           - route53:UpdateHostedZoneComment
-          Resource:
-          - "arn:aws:route53:::change/*"
-          - "arn:aws:route53:::healthcheck/*"
-          - "arn:aws:route53:::hostedzone/*"
+          Resource: '*'
         - 
           Effect: Allow
           Action:
@@ -325,7 +262,7 @@ Resources:
           - s3:PutBucketAcl
           - s3:PutBucketTagging
           - s3:PutEncryptionConfiguration
-          Resource: 'arn:aws:s3:::*'
+          Resource: '*'
         Version: '2012-10-17'
     Type: AWS::IAM::ManagedPolicy
 
@@ -345,7 +282,7 @@ Resources:
           - s3:PutObject
           - s3:PutObjectAcl
           - s3:PutObjectTagging
-          Resource: arn:aws:s3:::*/*
+          Resource: '*'
         Version: '2012-10-17'
     Type: AWS::IAM::ManagedPolicy
 
@@ -365,13 +302,7 @@ Resources:
           - iam:ListRolePolicies
           - iam:ListUserPolicies
           - s3:ListBucketVersions
-          Resource:
-          - "arn:aws:iam::*:instance-profile/*"
-          - "arn:aws:iam::*:user/*"
-          - "arn:aws:iam::*:role/*"
-          - "arn:aws:s3:::*"
-          - "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*"
-          - "arn:aws:ec2:*:*:volume/*"
+          Resource: '*'
         - 
           Effect: Allow
           Action:
@@ -384,7 +315,7 @@ Resources:
           Effect: Allow
           Action:
           - s3:DeleteObject
-          Resource: arn:aws:s3:::*/*
+          Resource: '*'
         Version: '2012-10-17'
     Type: AWS::IAM::ManagedPolicy
 
@@ -402,11 +333,7 @@ Resources:
           - ec2:DeleteRoute
           - ec2:DeleteRouteTable
           - ec2:DeleteVpcEndpoints
-          Resource:
-          - "arn:aws:ec2:*:*:route-table/*"
-          - "arn:aws:ec2:*:*:vpc-endpoint/*"
-          - "arn:aws:ec2:*:*:dhcp-options/*"
-          - "arn:aws:ec2:*:*:internet-gateway/*"
+          Resource: '*'
         - 
           Effect: Allow
           Action:
@@ -437,7 +364,7 @@ Resources:
           - iam:ListAccessKeys
           - iam:PutUserPolicy
           - iam:TagUser
-          Resource: arn:aws:iam::*:user/*
+          Resource: '*'
         - 
           Effect: Allow
           Action:
@@ -445,12 +372,12 @@ Resources:
           - s3:ListBucketMultipartUploads
           - s3:PutBucketPublicAccessBlock
           - s3:PutLifecycleConfiguration
-          Resource: arn:aws:s3:::*
+          Resource: '*'
         - 
           Effect: Allow
           Action:
           - s3:AbortMultipartUpload
-          Resource: arn:aws:s3:::*/*
+          Resource: '*'
         - 
           Effect: Allow
           Action:

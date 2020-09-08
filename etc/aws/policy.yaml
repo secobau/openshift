@@ -112,6 +112,7 @@ Resources:
           - "lambda:CreateFunction"
           - "lambda:GetFunction"
           - "lambda:GetFunctionConfiguration"
+          - "lambda:InvokeFunction"
           - "lambda:ListFunctions"
           Resource: '*'
         - 

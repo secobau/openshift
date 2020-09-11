@@ -2,7 +2,7 @@
 #      Copyright (C) 2020        Sebastian Francisco Colomar Bauza      #
 #      SPDX-License-Identifier:  GPL-2.0-only                           #
 #########################################################################
-# aws cloudformation create-stack --stack-name ocp-installer --template-body file://policy.yaml --capabilities CAPABILITY_IAM
+# aws cloudformation create-stack --stack-name $stack --template-body file://policy.yaml --capabilities CAPABILITY_IAM
 
 ---
 

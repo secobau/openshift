@@ -29,39 +29,12 @@ In case of using an already existing VPC you will also need to add the CIDR bloc
 ```bash
 networking:
   machineNetwork:
-  - cidr: 10.0.1.0/24	
-  - cidr: 10.0.3.0/24	
-  - cidr: 10.0.5.0/24	
+  - cidr: 10.0.1.0/24
+  - cidr: 10.0.3.0/24
+  - cidr: 10.0.5.0/24
 
 
 ```
-It is a good idea to make a copy of your configuration file:
-```bash
-cp $dir/install-config.yaml $dir/install-config.yaml.$( date +%F_%H%M )
 
-
-```
-Now you can create the cluster in AWS:
-```BASH
-openshift-install-$version create cluster --dir $dir --log-level=debug
-
-
-```
-If you have correctly created you AWS Cloud9 environment inside a public subnet of the already existing VPC then it should not be the case but if the install process is blocked because there is no DNS resolution of the API URL then you will need to create another Cloud9 environment inside a public subnet in the VPC where your private cluster is being installed.
-You will need to import into this new environment the SSH key pair used in the previous environment as well as the folder with the Openshift install files.
-You can then start again the install process after removing the terraform.tfstate file.
-
-The installation process will eventually finish successfully.
-
-To access the cluster as the system:admin user when using 'oc', run the following command:
-```bash
-export KUBECONFIG=$dir/auth/kubeconfig
-
-
-```
-To relax the security in your cluster so that images are not forced to run as a pre-allocated UID, without granting everyone access to the privileged SCC (a better solution is to bind only ephemeral ports in your application):
-```bash
-oc adm policy add-scc-to-group anyuid system:authenticated
-
-
-```
+Now you can proceed with the final step:
+* https://github.com/secobau/openshift/blob/master/install/final.md

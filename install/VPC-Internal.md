@@ -1,5 +1,5 @@
 First follow these instructions:
-* https://github.com/secobau/openshift/blob/master/install/initial.yaml
+* https://github.com/secobau/openshift/blob/master/install/initial.md
 
 If you wish your cluster to be private and not accessible from the external network:
 ```bash

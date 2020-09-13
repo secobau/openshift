@@ -150,12 +150,12 @@ sed --in-place s/AllowedBootstrapSshCidr_Value/"$( echo $AllowedBootstrapSshCidr
 sed --in-place s/PublicSubnet_Value/"$( echo $PublicSubnets | cut --delimiter , --field 1 )"/ $dir/$file
 sed --in-place s/MasterSecurityGroupId_Value/"$MasterSecurityGroupId"/ $dir/$file
 sed --in-place s/VpcId_Value/"$VpcId"/ $dir/$file
-sed --in-place s/BootstrapIgnitionLocation_Value/"$BootstrapIgnitionLocation"/ $dir/$file
+sed --in-place s/BootstrapIgnitionLocation_Value/"$( echo $BootstrapIgnitionLocation | sed 's/\//\\\//g' )"/ $dir/$file
 sed --in-place s/AutoRegisterELB_Value/"$AutoRegisterELB"/ $dir/$file
-sed --in-place s/RegisterNlbIpTargetsLambdaArn_Value/"$RegisterNlbIpTargetsLambdaArn"/ $dir/$file
-sed --in-place s/ExternalApiTargetGroupArn_Value/"$ExternalApiTargetGroupArn"/ $dir/$file
-sed --in-place s/InternalApiTargetGroupArn_Value/"$InternalApiTargetGroupArn"/ $dir/$file
-sed --in-place s/InternalServiceTargetGroupArn_Value/"$InternalServiceTargetGroupArn"/ $dir/$file
+sed --in-place s/RegisterNlbIpTargetsLambdaArn_Value/"$( echo $RegisterNlbIpTargetsLambdaArn | sed 's/\//\\\//g' )"/ $dir/$file
+sed --in-place s/ExternalApiTargetGroupArn_Value/"$( echo $ExternalApiTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
+sed --in-place s/InternalApiTargetGroupArn_Value/"$( echo $InternalApiTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
+sed --in-place s/InternalServiceTargetGroupArn_Value/"$( echo $InternalServiceTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
 
 file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir

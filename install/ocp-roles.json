@@ -4,12 +4,12 @@
     "ParameterValue": "InfrastructureName_Value" 
   },
   {
-    "ParameterKey": "Publish", 
-    "ParameterValue": "Publish_Value" 
-  },
-  {
     "ParameterKey": "PrivateSubnets", 
     "ParameterValue": "PrivateSubnets_Value" 
+  },
+  {
+    "ParameterKey": "VpcCidr", 
+    "ParameterValue": "VpcCidr_Value" 
   },
   {
     "ParameterKey": "VpcId", 

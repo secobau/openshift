@@ -61,25 +61,25 @@ aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file:
 ```
 You can use the following CloudFormation template to deploy the networking objects and load balancers that you need for your OpenShift Container Platform cluster:
 ```BASH
-PrivateSubnets=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )
-PublicSubnets=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )
-VpcId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[2].OutputValue --output text )
+PrivateSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )"
+PublicSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )"
+VpcId="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[2].OutputValue --output text )"
 
 sudo yum install --assumeyes jq
 
-InfrastructureName=$( jq --raw-output .infraID $dir/metadata.json )
-HostedZoneId=$( aws route53 list-hosted-zones-by-name | jq --arg name "$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )
+InfrastructureName="$( jq --raw-output .infraID $dir/metadata.json )"
+HostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
 
 file=ocp-parameters.json
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
-sed --in-place s/ClusterName_Value/$ClusterName/ $dir/$file
-sed --in-place s/HostedZoneId_Value/$HostedZoneId/ $dir/$file
-sed --in-place s/HostedZoneName_Value/$DomainName/ $dir/$file
-sed --in-place s/InfrastructureName_Value/$InfrastructureName/ $dir/$file
-sed --in-place s/Publish_Value/$Publish/ $dir/$file
-sed --in-place s/PrivateSubnets_Value/$PrivateSubnets/ $dir/$file
-sed --in-place s/PublicSubnets_Value/$PublicSubnets/ $dir/$file
-sed --in-place s/VpcId_Value/$VpcId/ $dir/$file
+sed --in-place s/ClusterName_Value/"$ClusterName"/ $dir/$file
+sed --in-place s/HostedZoneId_Value/"$HostedZoneId"/ $dir/$file
+sed --in-place s/HostedZoneName_Value/"$DomainName"/ $dir/$file
+sed --in-place s/InfrastructureName_Value/"$InfrastructureName"/ $dir/$file
+sed --in-place s/Publish_Value/"$Publish"/ $dir/$file
+sed --in-place s/PrivateSubnets_Value/"$PrivateSubnets"/ $dir/$file
+sed --in-place s/PublicSubnets_Value/"$PublicSubnets"/ $dir/$file
+sed --in-place s/VpcId_Value/"$VpcId"/ $dir/$file
 
 file=ocp-route53.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir

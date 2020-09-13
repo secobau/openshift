@@ -12,12 +12,12 @@
     "ParameterValue": "Publish_Value" 
   },
   {
-    "ParameterKey": "PrivateSubnetIds", 
-    "ParameterValue": "PrivateSubnetIds_Value" 
+    "ParameterKey": "PrivateSubnets", 
+    "ParameterValue": "PrivateSubnets_Value" 
   },
   {
-    "ParameterKey": "PublicSubnetIds", 
-    "ParameterValue": "PublicSubnetIds_Value" 
+    "ParameterKey": "PublicSubnets", 
+    "ParameterValue": "PublicSubnets_Value" 
   },
   {
     "ParameterKey": "VpcId", 

@@ -32,10 +32,15 @@ Parameters:
       - External
       - Internal
     Default: External
-  VpcStack:
-    Description: Name of the VPC stack.
-    Type: String
-    Default: ocp-vpc
+  PublicSubnets:
+    Description: The internet-facing subnets.
+    Type: List<AWS::EC2::Subnet::Id>
+  PrivateSubnets:
+    Description: The internal subnets.
+    Type: List<AWS::EC2::Subnet::Id>
+  VpcId:
+    Description: The VPC-scoped resources will belong to this VPC.
+    Type: AWS::EC2::VPC::Id
 
 Metadata:
   AWS::CloudFormation::Interface:
@@ -47,9 +52,11 @@ Metadata:
       - InfrastructureName
       - Publish
     - Label:
-        default: "Stack names"
+        default: "Network Configuration"
       Parameters:
-      - VpcStack
+      - VpcId
+      - PublicSubnets
+      - PrivateSubnets
     - Label:
         default: "DNS"
       Parameters:
@@ -62,8 +69,12 @@ Metadata:
         default: "Infrastructure Name"
       Publish:
         default: "How to publish the user-facing endpoints of your cluster"
-      VpcStack:
-        default: "Name of the VPC stack"
+      VpcId:
+        default: "VPC ID"
+      PublicSubnets:
+        default: "Public Subnets"
+      PrivateSubnets:
+        default: "Private Subnets"
       HostedZoneId:
         default: "Public Hosted Zone ID"
       HostedZoneName:
@@ -79,7 +90,7 @@ Resources:
     Properties:
       Name: !Join ["-", [!Ref InfrastructureName, "ext"]]
       IpAddressType: ipv4
-      Subnets: !ImportValue "${VpcStack}-PublicSubnetIds"
+      Subnets: !Ref PublicSubnets
       Type: network
 
   IntApiElb:
@@ -88,7 +99,7 @@ Resources:
       Name: !Join ["-", [!Ref InfrastructureName, "int"]]
       Scheme: internal
       IpAddressType: ipv4
-      Subnets: !ImportValue "${VpcStack}-PrivateSubnetIds"
+      Subnets: !Ref PrivateSubnets
       Type: network
 
   IntDns:
@@ -103,8 +114,7 @@ Resources:
       - Key: !Join ["", ["kubernetes.io/cluster/", !Ref InfrastructureName]]
         Value: "owned"
       VPCs:
-      - 
-        VpcId: !ImportValue "${VpcStack}-VpcId"
+      - VPCId: !Ref VpcId
         VPCRegion: !Ref "AWS::Region"
 
   ExternalApiServerRecord:
@@ -169,10 +179,10 @@ Resources:
       Port: 6443
       Protocol: TCP
       TargetType: ip
-      VpcId: !ImportValue "${VpcStack}-VpcId"
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
         Value: 60
+      VPCId: !Ref VpcId
 
   InternalApiListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
@@ -192,10 +202,10 @@ Resources:
       Port: 6443
       Protocol: TCP
       TargetType: ip
-      VpcId: !ImportValue "${VpcStack}-VpcId"
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
         Value: 60
+      VPCId: !Ref VpcId
 
   InternalServiceInternalListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
@@ -215,10 +225,10 @@ Resources:
       Port: 22623
       Protocol: TCP
       TargetType: ip
-      VpcId: !ImportValue "${VpcStack}-VpcId"
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
         Value: 60
+      VPCId: !Ref VpcId
 
   RegisterTargetLambdaIamRole:
     Type: AWS::IAM::Role
@@ -350,14 +360,14 @@ Resources:
     Properties:
       ServiceToken: !GetAtt RegisterSubnetTags.Arn
       InfrastructureName: !Ref InfrastructureName
-      Subnets: !ImportValue "${VpcStack}-PublicSubnetIds"
+      Subnets: !Ref PublicSubnets
 
   RegisterPrivateSubnetTags:
     Type: Custom::SubnetRegister
     Properties:
       ServiceToken: !GetAtt RegisterSubnetTags.Arn
       InfrastructureName: !Ref InfrastructureName
-      Subnets: !ImportValue "${VpcStack}-PrivateSubnetIds"
+      Subnets: !Ref PrivateSubnets
 
 Outputs:
   PrivateHostedZoneId:

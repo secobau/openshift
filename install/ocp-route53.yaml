@@ -182,7 +182,7 @@ Resources:
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
         Value: 60
-      VPCId: !Ref VpcId
+      VpcId: !Ref VpcId
 
   InternalApiListener:
     Type: AWS::ElasticLoadBalancingV2::Listener

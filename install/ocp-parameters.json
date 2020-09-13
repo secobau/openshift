@@ -12,8 +12,16 @@
     "ParameterValue": "Publish_Value" 
   },
   {
-    "ParameterKey": "VpcStack", 
-    "ParameterValue": "ocp-vpc" 
+    "ParameterKey": "PrivateSubnetIds", 
+    "ParameterValue": "PrivateSubnetIds_Value" 
+  },
+  {
+    "ParameterKey": "PublicSubnetIds", 
+    "ParameterValue": "PublicSubnetIds_Value" 
+  },
+  {
+    "ParameterKey": "VpcId", 
+    "ParameterValue": "VpcId_Value" 
   },
   {
     "ParameterKey": "HostedZoneId", 

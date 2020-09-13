@@ -1,4 +1,5 @@
 # https://docs.openshift.com/container-platform/4.5/installing/installing_aws/installing-aws-user-infra.html
+# aws cloudformation create-stack --stack-name ocp-vpc --template-body file://$dir/ocp-vpc.yaml
 
 AWSTemplateFormatVersion: 2010-09-09
 Description: Template for Best Practice VPC with 1-3 AZs

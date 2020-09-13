@@ -51,7 +51,7 @@ openshift-install-$version create ignition-configs --dir $dir --log-level debug
 
 
 ```
-You can use the following CloudFormation template to deploy the VPC that you need for your OpenShift Container Platform cluster:
+Creating a VPC in AWS:
 ```BASH
 VpcCidr=10.0.0.0/16
 AvailabilityZoneCount=3
@@ -91,7 +91,7 @@ HostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$DomainN
 
 
 ```
-You can use the following CloudFormation template to deploy the networking objects and load balancers that you need for your OpenShift Container Platform cluster:
+Creating networking and load balancing components in AWS:
 ```BASH
 file=ocp-route53.json
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
@@ -110,7 +110,7 @@ aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file:
 
 
 ```
-You can use the following CloudFormation template to deploy the security objects that you need for your OpenShift Container Platform cluster:
+Creating security group and roles in AWS:
 ```BASH
 file=ocp-roles.json
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir

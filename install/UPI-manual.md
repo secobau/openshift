@@ -139,7 +139,7 @@ BootstrapIgnitionLocation=s3://$InfrastructureName/bootstrap.ign
 AutoRegisterELB=yes
 
 aws s3 mb s3://$InfrastructureName
-aws s3 cp bootstrap.ign $BootstrapIgnitionLocation
+aws s3 cp $dir/bootstrap.ign $BootstrapIgnitionLocation
 aws s3 ls s3://$InfrastructureName/
 
 file=ocp-bootstrap.json

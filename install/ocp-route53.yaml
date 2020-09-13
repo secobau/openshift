@@ -88,7 +88,7 @@ Resources:
       Name: !Join ["-", [!Ref InfrastructureName, "int"]]
       Scheme: internal
       IpAddressType: ipv4
-      Subnets: !Ref PrivateSubnets
+      Subnets: !ImportValue "${VpcStack}-PrivateSubnetIds"
       Type: network
 
   IntDns:
@@ -103,7 +103,8 @@ Resources:
       - Key: !Join ["", ["kubernetes.io/cluster/", !Ref InfrastructureName]]
         Value: "owned"
       VPCs:
-      - VPCId: !Ref VpcId
+      - 
+        VpcId: !ImportValue "${VpcStack}-VpcId"
         VPCRegion: !Ref "AWS::Region"
 
   ExternalApiServerRecord:
@@ -168,8 +169,7 @@ Resources:
       Port: 6443
       Protocol: TCP
       TargetType: ip
-      VpcId:
-        Ref: VpcId
+      VpcId: !ImportValue "${VpcStack}-VpcId"
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
         Value: 60
@@ -192,8 +192,7 @@ Resources:
       Port: 6443
       Protocol: TCP
       TargetType: ip
-      VpcId:
-        Ref: VpcId
+      VpcId: !ImportValue "${VpcStack}-VpcId"
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
         Value: 60
@@ -216,8 +215,7 @@ Resources:
       Port: 22623
       Protocol: TCP
       TargetType: ip
-      VpcId:
-        Ref: VpcId
+      VpcId: !ImportValue "${VpcStack}-VpcId"
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
         Value: 60
@@ -352,14 +350,14 @@ Resources:
     Properties:
       ServiceToken: !GetAtt RegisterSubnetTags.Arn
       InfrastructureName: !Ref InfrastructureName
-      Subnets: !Ref PublicSubnets
+      Subnets: !ImportValue "${VpcStack}-PublicSubnetIds"
 
   RegisterPrivateSubnetTags:
     Type: Custom::SubnetRegister
     Properties:
       ServiceToken: !GetAtt RegisterSubnetTags.Arn
       InfrastructureName: !Ref InfrastructureName
-      Subnets: !Ref PrivateSubnets
+      Subnets: !ImportValue "${VpcStack}-PrivateSubnetIds"
 
 Outputs:
   PrivateHostedZoneId:

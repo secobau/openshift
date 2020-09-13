@@ -205,7 +205,7 @@ Resources:
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
         Value: 60
-      VPCId: !Ref VpcId
+      VpcId: !Ref VpcId
 
   InternalServiceInternalListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
@@ -228,7 +228,7 @@ Resources:
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
         Value: 60
-      VPCId: !Ref VpcId
+      VpcId: !Ref VpcId
 
   RegisterTargetLambdaIamRole:
     Type: AWS::IAM::Role

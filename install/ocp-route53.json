@@ -12,6 +12,10 @@
     "ParameterValue": "Publish_Value" 
   },
   {
+    "ParameterKey": "VpcStack", 
+    "ParameterValue": "ocp-vpc" 
+  },
+  {
     "ParameterKey": "HostedZoneId", 
     "ParameterValue": "HostedZoneId_Value" 
   },

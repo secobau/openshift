@@ -8,6 +8,10 @@
     "ParameterValue": "InfrastructureName_Value" 
   },
   {
+    "ParameterKey": "Publish", 
+    "ParameterValue": "Publish_Value" 
+  },
+  {
     "ParameterKey": "HostedZoneId", 
     "ParameterValue": "HostedZoneId_Value" 
   },

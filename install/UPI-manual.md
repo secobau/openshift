@@ -159,8 +159,7 @@ sed --in-place s/InternalServiceTargetGroupArn_Value/"$( echo $InternalServiceTa
 
 file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
-aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
-
+aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json --capabilities CAPABILITY_NAMED_IAM
 
 
 ```

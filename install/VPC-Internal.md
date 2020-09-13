@@ -1,13 +1,6 @@
 First follow these instructions:
 * https://github.com/secobau/openshift/blob/master/install/initial.md
 
-If you wish your cluster to be private and not accessible from the external network:
-```bash
-Publish=Internal
-sed --in-place s/External/$Publish/ $dir/install-config.yaml
-
-
-```
 Be sure to enable the following features in the VPC configuration in case your cluster is private:
 ```bash
 DNS resolution Enabled

@@ -1,6 +1,8 @@
 First follow these instructions:
 * https://github.com/secobau/openshift/blob/master/install/initial.md
 
+After the previous step is finished you may proceed.
+
 Set the number of compute replicas to zero:
 ```bash
 sed --in-place /compute/,/controlPlane/s/' '3/0/ $dir/install-config.yaml

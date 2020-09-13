@@ -3,7 +3,8 @@ First follow these instructions:
 
 If you wish your cluster to be private and not accessible from the external network:
 ```bash
-sed --in-place s/External/Internal/ $dir/install-config.yaml
+Publish=Internal
+sed --in-place s/External/$Publish/ $dir/install-config.yaml
 
 
 ```

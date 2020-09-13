@@ -275,8 +275,6 @@ Outputs:
   VpcId:
     Description: ID of the new VPC.
     Value: !Ref VPC
-    Export:
-      Name: !Sub "${AWS::StackName}-VpcId"
   PublicSubnetIds:
     Description: Subnet IDs of the public subnets.
     Value:
@@ -284,8 +282,6 @@ Outputs:
         ",",
         [!Ref PublicSubnet, !If [DoAz2, !Ref PublicSubnet2, !Ref "AWS::NoValue"], !If [DoAz3, !Ref PublicSubnet3, !Ref "AWS::NoValue"]]
       ]
-    Export:
-      Name: !Sub "${AWS::StackName}-PublicSubnetIds"
   PrivateSubnetIds:
     Description: Subnet IDs of the private subnets.
     Value:
@@ -293,5 +289,3 @@ Outputs:
         ",",
         [!Ref PrivateSubnet, !If [DoAz2, !Ref PrivateSubnet2, !Ref "AWS::NoValue"], !If [DoAz3, !Ref PrivateSubnet3, !Ref "AWS::NoValue"]]
       ]
-    Export:
-      Name: !Sub "${AWS::StackName}-PrivateSubnetIds"

@@ -63,18 +63,9 @@ sed --in-place s/VpcCidr_Value/"$VpcCidr"/ $dir/$file
 sed --in-place s/AvailabilityZoneCount_Value/"$AvailabilityZoneCount"/ $dir/$file
 sed --in-place s/SubnetBits_Value/"$SubnetBits"/ $dir/$file
 
-file=ocp-vpc.yaml
+file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
-
-PrivateSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )"
-PublicSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )"
-VpcId="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[2].OutputValue --output text )"
-
-sudo yum install --assumeyes jq
-
-InfrastructureName="$( jq --raw-output .infraID $dir/metadata.json )"
-HostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
 
 
 ```
@@ -104,9 +95,18 @@ sed --in-place s/PrivateSubnets_Value/"$PrivateSubnets"/ $dir/$file
 sed --in-place s/PublicSubnets_Value/"$PublicSubnets"/ $dir/$file
 sed --in-place s/VpcId_Value/"$VpcId"/ $dir/$file
 
-file=ocp-route53.yaml
+file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json --capabilities CAPABILITY_NAMED_IAM
+
+
+```
+Once the stack creation is completed you can get the following values:
+```BASH
+ExternalApiTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )
+InternalApiTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )
+RegisterNlbIpTargetsLambdaArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[5].OutputValue --output text )
+InternalServiceTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[6].OutputValue --output text )
 
 
 ```
@@ -119,9 +119,48 @@ sed --in-place s/PrivateSubnets_Value/"$PrivateSubnets"/ $dir/$file
 sed --in-place s/VpcCidr_Value/"$( echo $VpcCidr | sed 's/\//\\\//g' )"/ $dir/$file
 sed --in-place s/VpcId_Value/"$VpcId"/ $dir/$file
 
-file=ocp-roles.yaml
+file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json --capabilities CAPABILITY_NAMED_IAM
+
+
+```
+Once the stack creation is completed you can get the following values:
+```BASH
+MasterSecurityGroupId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )
+
+
+```
+Creating the bootstrap node in AWS:
+```BASH
+RhcosAmi=ami-0754b15d212830477
+AllowedBootstrapSshCidr=0.0.0.0/0
+BootstrapIgnitionLocation=s3://$InfrastructureName/bootstrap.ign
+AutoRegisterELB=yes
+
+aws s3 mb s3://$InfrastructureName
+aws s3 cp bootstrap.ign $BootstrapIgnitionLocation
+aws s3 ls s3://$InfrastructureName/
+
+file=ocp-bootstrap.json
+wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
+sed --in-place s/InfrastructureName_Value/"$InfrastructureName"/ $dir/$file
+sed --in-place s/RhcosAmi_Value/"$RhcosAmi"/ $dir/$file
+sed --in-place s/AllowedBootstrapSshCidr_Value/"$( echo $AllowedBootstrapSshCidr | sed 's/\//\\\//g' )"/ $dir/$file
+sed --in-place s/PublicSubnet_Value/"$( echo $PublicSubnets | cut --delimiter , --field 1 )"/ $dir/$file
+sed --in-place s/MasterSecurityGroupId_Value/"$MasterSecurityGroupId"/ $dir/$file
+sed --in-place s/VpcId_Value/"$VpcId"/ $dir/$file
+sed --in-place s/BootstrapIgnitionLocation_Value/"$BootstrapIgnitionLocation"/ $dir/$file
+sed --in-place s/AutoRegisterELB_Value/"$AutoRegisterELB"/ $dir/$file
+sed --in-place s/RegisterNlbIpTargetsLambdaArn_Value/"$RegisterNlbIpTargetsLambdaArn"/ $dir/$file
+sed --in-place s/ExternalApiTargetGroupArn_Value/"$ExternalApiTargetGroupArn"/ $dir/$file
+sed --in-place s/InternalApiTargetGroupArn_Value/"$InternalApiTargetGroupArn"/ $dir/$file
+sed --in-place s/InternalServiceTargetGroupArn_Value/"$InternalServiceTargetGroupArn"/ $dir/$file
+
+file=${file%.json}.yaml
+wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
+aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
+
 
 
 ```

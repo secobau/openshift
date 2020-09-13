@@ -53,13 +53,32 @@ openshift-install-$version create ignition-configs --dir $dir --log-level debug
 ```
 You can use the following CloudFormation template to deploy the VPC that you need for your OpenShift Container Platform cluster:
 ```BASH
+VpcCidr=10.0.0.0/16
+AvailabilityZoneCount=3
+SubnetBits=13
+
+file=ocp-vpc.json
+wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
+sed --in-place s/VpcCidr_Value/"$VpcCidr"/ $dir/$file
+sed --in-place s/AvailabilityZoneCount_Value/"$AvailabilityZoneCount"/ $dir/$file
+sed --in-place s/SubnetBits_Value/"$SubnetBits"/ $dir/$file
+
 file=ocp-vpc.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
-aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file
+aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
+
+PrivateSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )"
+PublicSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )"
+VpcId="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[2].OutputValue --output text )"
+
+sudo yum install --assumeyes jq
+
+InfrastructureName="$( jq --raw-output .infraID $dir/metadata.json )"
+HostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
 
 
 ```
-You can use the following CloudFormation template to deploy the networking objects and load balancers that you need for your OpenShift Container Platform cluster:
+Once the stack creation is completed you can get the following values:
 ```BASH
 PrivateSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )"
 PublicSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )"
@@ -70,7 +89,11 @@ sudo yum install --assumeyes jq
 InfrastructureName="$( jq --raw-output .infraID $dir/metadata.json )"
 HostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
 
-file=ocp-parameters.json
+
+```
+You can use the following CloudFormation template to deploy the networking objects and load balancers that you need for your OpenShift Container Platform cluster:
+```BASH
+file=ocp-route53.json
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 sed --in-place s/ClusterName_Value/"$ClusterName"/ $dir/$file
 sed --in-place s/HostedZoneId_Value/"$HostedZoneId"/ $dir/$file
@@ -83,7 +106,22 @@ sed --in-place s/VpcId_Value/"$VpcId"/ $dir/$file
 
 file=ocp-route53.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
-aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/ocp-parameters.json --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json --capabilities CAPABILITY_NAMED_IAM
+
+
+```
+You can use the following CloudFormation template to deploy the security objects that you need for your OpenShift Container Platform cluster:
+```BASH
+file=ocp-roles.json
+wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
+sed --in-place s/InfrastructureName_Value/"$InfrastructureName"/ $dir/$file
+sed --in-place s/PrivateSubnets_Value/"$PrivateSubnets"/ $dir/$file
+sed --in-place s/VpcCidr_Value/"$( echo $VpcCidr | sed 's/\//\\\//g' )"/ $dir/$file
+sed --in-place s/VpcId_Value/"$VpcId"/ $dir/$file
+
+file=ocp-roles.yaml
+wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
+aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json --capabilities CAPABILITY_NAMED_IAM
 
 
 ```

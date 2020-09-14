@@ -59,7 +59,7 @@ SubnetBits=13
 
 file=ocp-vpc.json
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
-sed --in-place s/VpcCidr_Value/"$VpcCidr"/ $dir/$file
+sed --in-place s/VpcCidr_Value/"$( echo $VpcCidr | sed 's/\//\\\//g' )"/ $dir/$file
 sed --in-place s/AvailabilityZoneCount_Value/"$AvailabilityZoneCount"/ $dir/$file
 sed --in-place s/SubnetBits_Value/"$SubnetBits"/ $dir/$file
 

@@ -236,9 +236,9 @@ done
 Worker0Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 1 )
 Worker1Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 2 )
 Worker2Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 3 )
-sed --in-place s/Subnet_Value/"$Worker0Subnet"/ $dir/ocp-work-0.json
-sed --in-place s/Subnet_Value/"$Worker1Subnet"/ $dir/ocp-work-1.json
-sed --in-place s/Subnet_Value/"$Worker2Subnet"/ $dir/ocp-work-2.json
+sed --in-place s/Subnet_Value/"$Worker0Subnet"/ $dir/ocp-worker-0.json
+sed --in-place s/Subnet_Value/"$Worker1Subnet"/ $dir/ocp-worker-1.json
+sed --in-place s/Subnet_Value/"$Worker2Subnet"/ $dir/ocp-worker-2.json
 
 template=${template%.json}.yaml
 

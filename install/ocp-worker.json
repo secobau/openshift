@@ -1,0 +1,34 @@
+[
+  {
+    "ParameterKey": "InfrastructureName", 
+    "ParameterValue": "InfrastructureName_Value" 
+  },
+  {
+    "ParameterKey": "RhcosAmi", 
+    "ParameterValue": "RhcosAmi_Value" 
+  },
+  {
+    "ParameterKey": "Subnet", 
+    "ParameterValue": "Subnet_Value" 
+  },
+  {
+    "ParameterKey": "WorkerSecurityGroupId", 
+    "ParameterValue": "WorkerSecurityGroupId_Value" 
+  },
+  {
+    "ParameterKey": "IgnitionLocation", 
+    "ParameterValue": "IgnitionLocation_Value" 
+  },
+  {
+    "ParameterKey": "CertificateAuthorities", 
+    "ParameterValue": "CertificateAuthorities_Value" 
+  },
+  {
+    "ParameterKey": "WorkerInstanceProfileName", 
+    "ParameterValue": "WorkerInstanceProfileName_Value" 
+  },
+  {
+    "ParameterKey": "WorkerInstanceType", 
+    "ParameterValue": "WorkerInstanceType_Value" 
+  }
+]

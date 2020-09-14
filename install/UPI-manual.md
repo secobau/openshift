@@ -174,7 +174,7 @@ Master0Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 1 )
 Master1Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 2 )
 Master2Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 3 )
 IgnitionLocation=https://api-int.$PrivateHostedZoneName:22623/config/master
-CertificateAuthorities=$( jq .ignition.security.tls.certificateAuthorities[0].source --raw-data $dir/master.ign )
+CertificateAuthorities=$( jq .ignition.security.tls.certificateAuthorities[0].source --raw-output $dir/master.ign )
 MasterInstanceType=t3a.xlarge
 
 file=ocp-master.json

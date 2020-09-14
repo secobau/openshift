@@ -105,6 +105,7 @@ Once the stack creation is completed you can get the following values:
 ```BASH
 ExternalApiTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )
 InternalApiTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )
+PrivateHostedZoneId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[3].OutputValue --output text )
 RegisterNlbIpTargetsLambdaArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[5].OutputValue --output text )
 InternalServiceTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[6].OutputValue --output text )
 
@@ -128,6 +129,7 @@ aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file:
 Once the stack creation is completed you can get the following values:
 ```BASH
 MasterSecurityGroupId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )
+MasterInstanceProfileName=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )
 
 
 ```
@@ -135,6 +137,7 @@ Creating the bootstrap node in AWS:
 ```BASH
 RhcosAmi=ami-0754b15d212830477
 AllowedBootstrapSshCidr=0.0.0.0/0
+PublicSubnet=$( echo $PublicSubnets | cut --delimiter , --field 1 )
 BootstrapIgnitionLocation=s3://$InfrastructureName/bootstrap.ign
 AutoRegisterELB=yes
 
@@ -147,7 +150,7 @@ wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --
 sed --in-place s/InfrastructureName_Value/"$InfrastructureName"/ $dir/$file
 sed --in-place s/RhcosAmi_Value/"$RhcosAmi"/ $dir/$file
 sed --in-place s/AllowedBootstrapSshCidr_Value/"$( echo $AllowedBootstrapSshCidr | sed 's/\//\\\//g' )"/ $dir/$file
-sed --in-place s/PublicSubnet_Value/"$( echo $PublicSubnets | cut --delimiter , --field 1 )"/ $dir/$file
+sed --in-place s/PublicSubnet_Value/"$PublicSubnet"/ $dir/$file
 sed --in-place s/MasterSecurityGroupId_Value/"$MasterSecurityGroupId"/ $dir/$file
 sed --in-place s/VpcId_Value/"$VpcId"/ $dir/$file
 sed --in-place s/BootstrapIgnitionLocation_Value/"$( echo $BootstrapIgnitionLocation | sed 's/\//\\\//g' )"/ $dir/$file
@@ -160,6 +163,44 @@ sed --in-place s/InternalServiceTargetGroupArn_Value/"$( echo $InternalServiceTa
 file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json --capabilities CAPABILITY_NAMED_IAM
+
+
+```
+Creating the control plane machines in AWS:
+```BASH
+AutoRegisterDNS=yes
+PrivateHostedZoneName=$ClusterName.$DomainName
+Master0Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 1 )
+Master1Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 2 )
+Master2Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 3 )
+IgnitionLocation=https://api-int.$PrivateHostedZoneName:22623/config/master
+CertificateAuthorities=$( jq .ignition.security.tls.certificateAuthorities[0].source $dir/master.ign )
+MasterInstanceType=t3a.xlarge
+
+file=ocp-master.json
+wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
+sed --in-place s/InfrastructureName_Value/"$InfrastructureName"/ $dir/$file
+sed --in-place s/RhcosAmi_Value/"$RhcosAmi"/ $dir/$file
+sed --in-place s/AutoRegisterDNS_Value/"$AutoRegisterDNS"/ $dir/$file
+sed --in-place s/PrivateHostedZoneId_Value/"$PrivateHostedZoneId"/ $dir/$file
+sed --in-place s/PrivateHostedZoneName_Value/"$PrivateHostedZoneName"/ $dir/$file
+sed --in-place s/Master0Subnet_Value/"$Master0Subnet"/ $dir/$file
+sed --in-place s/Master1Subnet_Value/"$Master1Subnet"/ $dir/$file
+sed --in-place s/Master2Subnet_Value/"$Master2Subnet"/ $dir/$file
+sed --in-place s/MasterSecurityGroupId_Value/"$MasterSecurityGroupId"/ $dir/$file
+sed --in-place s/IgnitionLocation_Value/"$( echo $IgnitionLocation | sed 's/\//\\\//g' )"/ $dir/$file
+sed --in-place s/CertificateAuthorities_Value/"$( echo $CertificateAuthorities | sed 's/\//\\\//g' )"/ $dir/$file
+sed --in-place s/MasterInstanceProfileName_Value/"$MasterInstanceProfileName"/ $dir/$file
+sed --in-place s/MasterInstanceType_Value/"$MasterInstanceType"/ $dir/$file
+sed --in-place s/AutoRegisterELB_Value/"$AutoRegisterELB"/ $dir/$file
+sed --in-place s/RegisterNlbIpTargetsLambdaArn_Value/"$( echo $RegisterNlbIpTargetsLambdaArn | sed 's/\//\\\//g' )"/ $dir/$file
+sed --in-place s/ExternalApiTargetGroupArn_Value/"$( echo $ExternalApiTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
+sed --in-place s/InternalApiTargetGroupArn_Value/"$( echo $InternalApiTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
+sed --in-place s/InternalServiceTargetGroupArn_Value/"$( echo $InternalServiceTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
+
+file=${file%.json}.yaml
+wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
+aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
 
 
 ```

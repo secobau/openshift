@@ -223,7 +223,7 @@ template=ocp-worker.json
 for x in 0 1 2
 do
 file=ocp-worker-$x.json
-wget https://raw.githubusercontent.com/secobau/openshift/master/install/$template --directory-prefix $dir --output-document $file
+wget https://raw.githubusercontent.com/secobau/openshift/master/install/$template --output-document $dir/$file
 sed --in-place s/InfrastructureName_Value/"$InfrastructureName"/ $dir/$file
 sed --in-place s/RhcosAmi_Value/"$RhcosAmi"/ $dir/$file
 sed --in-place s/WorkerSecurityGroupId_Value/"$WorkerSecurityGroupId"/ $dir/$file
@@ -245,7 +245,7 @@ template=${template%.json}.yaml
 for x in 0 1 2
 do
 file=ocp-worker-$x.yaml
-wget https://raw.githubusercontent.com/secobau/openshift/master/install/$template --directory-prefix $dir --output-document $file
+wget https://raw.githubusercontent.com/secobau/openshift/master/install/$template --output-document $dir/$file
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
 done
 

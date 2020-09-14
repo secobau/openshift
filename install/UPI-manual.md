@@ -130,6 +130,8 @@ Once the stack creation is completed you can get the following values:
 ```BASH
 MasterSecurityGroupId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )
 MasterInstanceProfileName=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )
+WorkerSecurityGroupId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[2].OutputValue --output text )
+WorkerInstanceProfileName=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[3].OutputValue --output text )
 
 
 ```
@@ -201,6 +203,51 @@ sed --in-place s/InternalServiceTargetGroupArn_Value/"$( echo $InternalServiceTa
 file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
+
+
+```
+Initializing the bootstrap node on AWS with user-provisioned infrastructure:
+```BASH
+openshift-install-$version wait-for bootstrap-complete --dir $dir --log-level debug
+
+
+```
+Creating the worker nodes in AWS:
+```BASH
+IgnitionLocation=https://api-int.$PrivateHostedZoneName:22623/config/worker
+CertificateAuthorities=$( jq .ignition.security.tls.certificateAuthorities[0].source --raw-output $dir/worker.ign )
+WorkerInstanceType=t3a.large
+
+template=ocp-worker.json
+
+for x in 0 1 2
+do
+file=ocp-worker-$x.json
+wget https://raw.githubusercontent.com/secobau/openshift/master/install/$template --directory-prefix $dir --output-document $file
+sed --in-place s/InfrastructureName_Value/"$InfrastructureName"/ $dir/$file
+sed --in-place s/RhcosAmi_Value/"$RhcosAmi"/ $dir/$file
+sed --in-place s/WorkerSecurityGroupId_Value/"$WorkerSecurityGroupId"/ $dir/$file
+sed --in-place s/IgnitionLocation_Value/"$( echo $IgnitionLocation | sed 's/\//\\\//g' )"/ $dir/$file
+sed --in-place s/CertificateAuthorities_Value/"$( echo $CertificateAuthorities | sed 's/\//\\\//g' )"/ $dir/$file
+sed --in-place s/WorkerInstanceProfileName_Value/"$WorkerInstanceProfileName"/ $dir/$file
+sed --in-place s/WorkerInstanceType_Value/"$WorkerInstanceType"/ $dir/$file
+done
+
+Worker0Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 1 )
+Worker1Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 2 )
+Worker2Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 3 )
+sed --in-place s/Subnet_Value/"$Worker0Subnet"/ $dir/ocp-work-0.json
+sed --in-place s/Subnet_Value/"$Worker1Subnet"/ $dir/ocp-work-1.json
+sed --in-place s/Subnet_Value/"$Worker2Subnet"/ $dir/ocp-work-2.json
+
+template=${template%.json}.yaml
+
+for x in 0 1 2
+do
+file=ocp-worker-$x.yaml
+wget https://raw.githubusercontent.com/secobau/openshift/master/install/$template --directory-prefix $dir --output-document $file
+aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
+done
 
 
 ```

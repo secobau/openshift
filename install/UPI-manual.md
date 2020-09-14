@@ -274,3 +274,9 @@ done
 
 
 ```
+Completing an AWS installation on user-provisioned infrastructure:
+```bash
+openshift-install-$version wait-for install-complete --dir $dir --log-level debug
+
+
+```

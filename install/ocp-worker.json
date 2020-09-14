@@ -8,8 +8,16 @@
     "ParameterValue": "RhcosAmi_Value" 
   },
   {
-    "ParameterKey": "Subnet", 
-    "ParameterValue": "Subnet_Value" 
+    "ParameterKey": "Subnet0", 
+    "ParameterValue": "Subnet0_Value" 
+  },
+  {
+    "ParameterKey": "Subnet1", 
+    "ParameterValue": "Subnet1_Value" 
+  },
+  {
+    "ParameterKey": "Subnet2", 
+    "ParameterValue": "Subnet2_Value" 
   },
   {
     "ParameterKey": "WorkerSecurityGroupId", 

@@ -280,3 +280,4 @@ openshift-install-$version wait-for install-complete --dir $dir --log-level debu
 
 
 ```
+This documentation is based on this: https://docs.openshift.com/container-platform/4.5/installing/installing_aws/installing-aws-user-infra.html

@@ -1,7 +1,7 @@
 First follow these instructions:
 * https://github.com/secobau/openshift/blob/master/install/initial.md
 
-After the previous step is finished you may proceed.
+After the previous step is finished then you may proceed.
 
 Set the number of compute replicas to zero:
 ```bash

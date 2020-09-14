@@ -246,3 +246,31 @@ export KUBECONFIG=$dir/auth/kubeconfig
 
 
 ```
+Approving the CSRs for your machines:
+```bash
+oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{{"\n"}}{{end}}{{end}}' | xargs oc adm certificate approve
+
+
+```
+Deleting the bootstrap resources:
+```bash
+aws cloudformation delete-stack --stack-name ocp-bootstrap
+
+
+```
+Creating the Ingress DNS Records:
+```bash
+routes="$( oc get --all-namespaces -o jsonpath='{range .items[*]}{range .status.ingress[*]}{.host}{"\n"}{end}{end}' routes | cut --delimiter . --field 1 )"
+hostname=$( oc -n openshift-ingress get service router-default -o custom-columns=:.status.loadBalancer.ingress[].hostname --no-headers )
+CanonicalHostedZoneNameID=$( aws elb describe-load-balancers | jq -r '.LoadBalancerDescriptions[] | select(.DNSName == "'$hostname'").CanonicalHostedZoneNameID' )
+PublicHostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
+PrivateHostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$ClusterName.$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
+route=oauth-openshift
+for route in $routes
+do
+aws route53 change-resource-record-sets --hosted-zone-id "$PrivateHostedZoneId" --change-batch '{ "Changes": [ { "Action": "CREATE", "ResourceRecordSet": { "Name": "'$route'.apps.'$ClusterName.$DomainName'", "Type": "A", "AliasTarget":{ "HostedZoneId": "'$CanonicalHostedZoneNameID'", "DNSName": "'$hostname'.", "EvaluateTargetHealth": false } } } ] }'
+aws route53 change-resource-record-sets --hosted-zone-id "$PublicHostedZoneId" --change-batch '{ "Changes": [ { "Action": "CREATE", "ResourceRecordSet": { "Name": "'$route'.apps.'$ClusterName.$DomainName'", "Type": "A", "AliasTarget":{ "HostedZoneId": "'$CanonicalHostedZoneNameID'", "DNSName": "'$hostname'.", "EvaluateTargetHealth": false } } } ] }'
+done
+
+
+```

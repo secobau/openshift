@@ -14,8 +14,14 @@ Parameters:
   RhcosAmi:
     Description: Current Red Hat Enterprise Linux CoreOS AMI to use for bootstrap.
     Type: AWS::EC2::Image::Id
-  Subnet:
-    Description: The subnets, recommend private, to launch the master nodes into.
+  Subnet0:
+    Description: The subnets, recommend private, to launch the worker node 0.
+    Type: AWS::EC2::Subnet::Id
+  Subnet1:
+    Description: The subnets, recommend private, to launch the worker node 1.
+    Type: AWS::EC2::Subnet::Id
+  Subnet2:
+    Description: The subnets, recommend private, to launch the worker node 2.
     Type: AWS::EC2::Subnet::Id
   WorkerSecurityGroupId:
     Description: The master security group ID to associate with master nodes.
@@ -54,10 +60,16 @@ Metadata:
     - Label:
         default: "Network Configuration"
       Parameters:
-      - Subnet
+      - Subnet0
+      - Subnet1
+      - Subnet2
     ParameterLabels:
-      Subnet:
-        default: "Subnet"
+      Subnet0:
+        default: "Subnet0"
+      Subnet1:
+        default: "Subnet1"
+      Subnet2:
+        default: "Subnet2"
       InfrastructureName:
         default: "Infrastructure Name"
       WorkerInstanceType:
@@ -73,7 +85,9 @@ Metadata:
       WorkerSecurityGroupId:
         default: "Worker Security Group ID"
 
+
 Resources:
+
   Worker0:
     Type: AWS::EC2::Instance
     Properties:
@@ -90,7 +104,63 @@ Resources:
         DeviceIndex: "0"
         GroupSet:
         - !Ref "WorkerSecurityGroupId"
-        SubnetId: !Ref "Subnet"
+        SubnetId: !Ref "Subnet0"
+      UserData:
+        Fn::Base64: !Sub
+        - '{"ignition":{"config":{"append":[{"source":"${SOURCE}","verification":{}}]},"security":{"tls":{"certificateAuthorities":[{"source":"${CA_BUNDLE}","verification":{}}]}},"timeouts":{},"version":"2.2.0"},"networkd":{},"passwd":{},"storage":{},"systemd":{}}'
+        - {
+          SOURCE: !Ref IgnitionLocation,
+          CA_BUNDLE: !Ref CertificateAuthorities,
+        }
+      Tags:
+      - Key: !Join ["", ["kubernetes.io/cluster/", !Ref InfrastructureName]]
+        Value: "shared"
+
+  Worker1:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref RhcosAmi
+      BlockDeviceMappings:
+      - DeviceName: /dev/xvda
+        Ebs:
+          VolumeSize: "120"
+          VolumeType: "gp2"
+      IamInstanceProfile: !Ref WorkerInstanceProfileName
+      InstanceType: !Ref WorkerInstanceType
+      NetworkInterfaces:
+      - AssociatePublicIpAddress: "false"
+        DeviceIndex: "0"
+        GroupSet:
+        - !Ref "WorkerSecurityGroupId"
+        SubnetId: !Ref "Subnet1"
+      UserData:
+        Fn::Base64: !Sub
+        - '{"ignition":{"config":{"append":[{"source":"${SOURCE}","verification":{}}]},"security":{"tls":{"certificateAuthorities":[{"source":"${CA_BUNDLE}","verification":{}}]}},"timeouts":{},"version":"2.2.0"},"networkd":{},"passwd":{},"storage":{},"systemd":{}}'
+        - {
+          SOURCE: !Ref IgnitionLocation,
+          CA_BUNDLE: !Ref CertificateAuthorities,
+        }
+      Tags:
+      - Key: !Join ["", ["kubernetes.io/cluster/", !Ref InfrastructureName]]
+        Value: "shared"
+
+  Worker2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref RhcosAmi
+      BlockDeviceMappings:
+      - DeviceName: /dev/xvda
+        Ebs:
+          VolumeSize: "120"
+          VolumeType: "gp2"
+      IamInstanceProfile: !Ref WorkerInstanceProfileName
+      InstanceType: !Ref WorkerInstanceType
+      NetworkInterfaces:
+      - AssociatePublicIpAddress: "false"
+        DeviceIndex: "0"
+        GroupSet:
+        - !Ref "WorkerSecurityGroupId"
+        SubnetId: !Ref "Subnet2"
       UserData:
         Fn::Base64: !Sub
         - '{"ignition":{"config":{"append":[{"source":"${SOURCE}","verification":{}}]},"security":{"tls":{"certificateAuthorities":[{"source":"${CA_BUNDLE}","verification":{}}]}},"timeouts":{},"version":"2.2.0"},"networkd":{},"passwd":{},"storage":{},"systemd":{}}'
@@ -103,6 +173,12 @@ Resources:
         Value: "shared"
 
 Outputs:
-  PrivateIP:
-    Description: The compute node private IP address.
+  PrivateIP0:
+    Description: The compute node 0 private IP address.
     Value: !GetAtt Worker0.PrivateIp
+  PrivateIP1:
+    Description: The compute node 1 private IP address.
+    Value: !GetAtt Worker1.PrivateIp
+  PrivateIP2:
+    Description: The compute node 2 private IP address.
+    Value: !GetAtt Worker2.PrivateIp

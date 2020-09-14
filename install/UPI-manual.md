@@ -240,3 +240,9 @@ aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file:
 
 
 ```
+Logging in to the cluster:
+```BASH
+export KUBECONFIG=$dir/auth/kubeconfig
+
+
+```

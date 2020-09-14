@@ -65,7 +65,7 @@ test -d $dir || mkdir --parents $dir
 ```
 Now you create a configuration file template to be later modified:
 ```bash
-openshift-install-$version create install-config --dir $dir
+openshift-install-$version create install-config --dir $dir --log-level debug
 
 
 ```

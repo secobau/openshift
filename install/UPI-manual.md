@@ -72,8 +72,9 @@ aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file:
 Once the stack creation is completed you can get the following values:
 ```BASH
 PrivateSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )"
-PublicSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )"
 VpcId="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[2].OutputValue --output text )"
+
+test $Publish=External && PublicSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )"
 
 sudo yum install --assumeyes jq
 
@@ -92,8 +93,9 @@ sed --in-place s/HostedZoneName_Value/"$DomainName"/ $dir/$file
 sed --in-place s/InfrastructureName_Value/"$InfrastructureName"/ $dir/$file
 sed --in-place s/Publish_Value/"$Publish"/ $dir/$file
 sed --in-place s/PrivateSubnets_Value/"$PrivateSubnets"/ $dir/$file
-sed --in-place s/PublicSubnets_Value/"$PublicSubnets"/ $dir/$file
 sed --in-place s/VpcId_Value/"$VpcId"/ $dir/$file
+
+test $Publish=External && sed --in-place s/PublicSubnets_Value/"$PublicSubnets"/ $dir/$file
 
 file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
@@ -103,11 +105,12 @@ aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file:
 ```
 Once the stack creation is completed you can get the following values:
 ```BASH
-ExternalApiTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )
 InternalApiTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )
 PrivateHostedZoneId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[3].OutputValue --output text )
 RegisterNlbIpTargetsLambdaArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[5].OutputValue --output text )
 InternalServiceTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[6].OutputValue --output text )
+
+test $Publish=External && ExternalApiTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )
 
 
 ```
@@ -139,9 +142,10 @@ Creating the bootstrap node in AWS:
 ```BASH
 RhcosAmi=ami-0754b15d212830477
 AllowedBootstrapSshCidr=0.0.0.0/0
-PublicSubnet=$( echo $PublicSubnets | cut --delimiter , --field 1 )
 BootstrapIgnitionLocation=s3://$InfrastructureName/bootstrap.ign
 AutoRegisterELB=yes
+
+test $Publish=External && PublicSubnet=$( echo $PublicSubnets | cut --delimiter , --field 1 )
 
 aws s3 mb s3://$InfrastructureName
 aws s3 cp $dir/bootstrap.ign $BootstrapIgnitionLocation
@@ -152,15 +156,16 @@ wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --
 sed --in-place s/InfrastructureName_Value/"$InfrastructureName"/ $dir/$file
 sed --in-place s/RhcosAmi_Value/"$RhcosAmi"/ $dir/$file
 sed --in-place s/AllowedBootstrapSshCidr_Value/"$( echo $AllowedBootstrapSshCidr | sed 's/\//\\\//g' )"/ $dir/$file
-sed --in-place s/PublicSubnet_Value/"$PublicSubnet"/ $dir/$file
 sed --in-place s/MasterSecurityGroupId_Value/"$MasterSecurityGroupId"/ $dir/$file
 sed --in-place s/VpcId_Value/"$VpcId"/ $dir/$file
 sed --in-place s/BootstrapIgnitionLocation_Value/"$( echo $BootstrapIgnitionLocation | sed 's/\//\\\//g' )"/ $dir/$file
 sed --in-place s/AutoRegisterELB_Value/"$AutoRegisterELB"/ $dir/$file
 sed --in-place s/RegisterNlbIpTargetsLambdaArn_Value/"$( echo $RegisterNlbIpTargetsLambdaArn | sed 's/\//\\\//g' )"/ $dir/$file
-sed --in-place s/ExternalApiTargetGroupArn_Value/"$( echo $ExternalApiTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
 sed --in-place s/InternalApiTargetGroupArn_Value/"$( echo $InternalApiTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
 sed --in-place s/InternalServiceTargetGroupArn_Value/"$( echo $InternalServiceTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
+
+test $Publish=External && sed --in-place s/PublicSubnet_Value/"$PublicSubnet"/ $dir/$file
+test $Publish=External && sed --in-place s/ExternalApiTargetGroupArn_Value/"$( echo $ExternalApiTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
 
 file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
@@ -196,9 +201,10 @@ sed --in-place s/MasterInstanceProfileName_Value/"$MasterInstanceProfileName"/ $
 sed --in-place s/MasterInstanceType_Value/"$MasterInstanceType"/ $dir/$file
 sed --in-place s/AutoRegisterELB_Value/"$AutoRegisterELB"/ $dir/$file
 sed --in-place s/RegisterNlbIpTargetsLambdaArn_Value/"$( echo $RegisterNlbIpTargetsLambdaArn | sed 's/\//\\\//g' )"/ $dir/$file
-sed --in-place s/ExternalApiTargetGroupArn_Value/"$( echo $ExternalApiTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
 sed --in-place s/InternalApiTargetGroupArn_Value/"$( echo $InternalApiTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
 sed --in-place s/InternalServiceTargetGroupArn_Value/"$( echo $InternalServiceTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
+
+test $Publish=External && sed --in-place s/ExternalApiTargetGroupArn_Value/"$( echo $ExternalApiTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
 
 file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
@@ -263,13 +269,14 @@ Creating the Ingress DNS Records:
 routes="$( oc get --all-namespaces -o jsonpath='{range .items[*]}{range .status.ingress[*]}{.host}{"\n"}{end}{end}' routes | cut --delimiter . --field 1 )"
 hostname=$( oc -n openshift-ingress get service router-default -o custom-columns=:.status.loadBalancer.ingress[].hostname --no-headers )
 CanonicalHostedZoneNameID=$( aws elb describe-load-balancers | jq -r '.LoadBalancerDescriptions[] | select(.DNSName == "'$hostname'").CanonicalHostedZoneNameID' )
-PublicHostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
 PrivateHostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$ClusterName.$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
+
+test $Publish=External && PublicHostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
 
 for route in $routes
 do
 aws route53 change-resource-record-sets --hosted-zone-id "$PrivateHostedZoneId" --change-batch '{ "Changes": [ { "Action": "CREATE", "ResourceRecordSet": { "Name": "'$route'.apps.'$ClusterName.$DomainName'", "Type": "A", "AliasTarget":{ "HostedZoneId": "'$CanonicalHostedZoneNameID'", "DNSName": "'$hostname'.", "EvaluateTargetHealth": false } } } ] }'
-aws route53 change-resource-record-sets --hosted-zone-id "$PublicHostedZoneId" --change-batch '{ "Changes": [ { "Action": "CREATE", "ResourceRecordSet": { "Name": "'$route'.apps.'$ClusterName.$DomainName'", "Type": "A", "AliasTarget":{ "HostedZoneId": "'$CanonicalHostedZoneNameID'", "DNSName": "'$hostname'.", "EvaluateTargetHealth": false } } } ] }'
+test $Publish=External && aws route53 change-resource-record-sets --hosted-zone-id "$PublicHostedZoneId" --change-batch '{ "Changes": [ { "Action": "CREATE", "ResourceRecordSet": { "Name": "'$route'.apps.'$ClusterName.$DomainName'", "Type": "A", "AliasTarget":{ "HostedZoneId": "'$CanonicalHostedZoneNameID'", "DNSName": "'$hostname'.", "EvaluateTargetHealth": false } } } ] }'
 done
 
 

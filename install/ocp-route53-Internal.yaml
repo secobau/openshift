@@ -25,6 +25,13 @@ Parameters:
     Description: The Route53 zone to register the targets with, such as example.com. Omit the trailing period.
     Type: String
     Default: "sebastian-colomar.com"
+  Publish:
+    Description: How to publish the user-facing endpoints of your cluster.
+    Type: String
+    AllowedValues:
+      - External
+      - Internal
+    Default: External
   PrivateSubnets:
     Description: The internal subnets.
     Type: List<AWS::EC2::Subnet::Id>
@@ -40,6 +47,7 @@ Metadata:
       Parameters:
       - ClusterName
       - InfrastructureName
+      - Publish
     - Label:
         default: "Network Configuration"
       Parameters:
@@ -55,6 +63,8 @@ Metadata:
         default: "Cluster Name"
       InfrastructureName:
         default: "Infrastructure Name"
+      Publish:
+        default: "How to publish the user-facing endpoints of your cluster"
       VpcId:
         default: "VPC ID"
       PrivateSubnets:

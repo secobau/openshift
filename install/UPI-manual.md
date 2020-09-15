@@ -143,8 +143,7 @@ RhcosAmi=ami-0754b15d212830477
 AllowedBootstrapSshCidr=0.0.0.0/0
 BootstrapIgnitionLocation=s3://$InfrastructureName/bootstrap.ign
 AutoRegisterELB=yes
-
-test $Publish = External && PublicSubnet=$( echo $PublicSubnets | cut --delimiter , --field 1 )
+PublicSubnet=$( echo $PublicSubnets | cut --delimiter , --field 1 )
 
 aws s3 mb s3://$InfrastructureName
 aws s3 cp $dir/bootstrap.ign $BootstrapIgnitionLocation

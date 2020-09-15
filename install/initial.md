@@ -7,7 +7,7 @@ All the steps will be performed from an AWS Cloud9 terminal with enough privileg
 ```bash
 file=policy.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/etc/aws/$file
-aws cloudformation create-stack --stack-name ocp-${file%.yaml} --template-body file://$file
+aws cloudformation create-stack --stack-name ocp-${file%.yaml} --template-body file://$file --capabilities CAPABILITY_NAMED_IAM
 
 
 ```

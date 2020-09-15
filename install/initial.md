@@ -3,8 +3,14 @@ In order to install a new Red Hat Openshift cluster in AWS please follow these s
 You will need the Pull Secret generated in this page:
 * https://cloud.redhat.com/openshift/install
 
-All the steps will be performed from an AWS Cloud9 terminal with enough privileges (AdministratorAccess will work).
+All the steps will be performed from an AWS Cloud9 terminal with enough privileges (AdministratorAccess will work):
+```bash
+file=policy.yaml
+wget https://raw.githubusercontent.com/secobau/openshift/master/etc/aws/$file
+aws cloudformation create-stack --stack-name $file --template-body file://$file
 
+
+```
 You will need to obtain a valid public domain name before installing the cluster:
 * https://console.aws.amazon.com/route53/home
 

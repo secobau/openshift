@@ -162,8 +162,8 @@ sed --in-place s/AutoRegisterELB_Value/"$AutoRegisterELB"/ $dir/$file
 sed --in-place s/RegisterNlbIpTargetsLambdaArn_Value/"$( echo $RegisterNlbIpTargetsLambdaArn | sed 's/\//\\\//g' )"/ $dir/$file
 sed --in-place s/InternalApiTargetGroupArn_Value/"$( echo $InternalApiTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
 sed --in-place s/InternalServiceTargetGroupArn_Value/"$( echo $InternalServiceTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
+sed --in-place s/PublicSubnet_Value/"$PublicSubnet"/ $dir/$file
 
-test $Publish = External && sed --in-place s/PublicSubnet_Value/"$PublicSubnet"/ $dir/$file
 test $Publish = External && sed --in-place s/ExternalApiTargetGroupArn_Value/"$( echo $ExternalApiTargetGroupArn | sed 's/\//\\\//g' )"/ $dir/$file
 
 file=${file%.json}.yaml

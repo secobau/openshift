@@ -67,13 +67,6 @@ Parameters:
   InternalServiceTargetGroupArn:
     Description: ARN for internal service load balancer target group. Supply the value from the cluster infrastructure or select "no" for AutoRegisterELB.
     Type: String
-  Publish:
-    Description: How to publish the user-facing endpoints of your cluster.
-    Type: String
-    AllowedValues:
-      - External
-      - Internal
-    Default: External
 
 Metadata:
   AWS::CloudFormation::Interface:
@@ -82,7 +75,6 @@ Metadata:
         default: "Cluster Information"
       Parameters:
       - InfrastructureName
-      - Publish
     - Label:
         default: "Host Information"
       Parameters:
@@ -116,8 +108,6 @@ Metadata:
     ParameterLabels:
       InfrastructureName:
         default: "Infrastructure Name"
-      Publish:
-        default: "How to publish the user-facing endpoints of your cluster"
       VpcId:
         default: "VPC ID"
       Master0Subnet:

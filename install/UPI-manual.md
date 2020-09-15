@@ -182,7 +182,7 @@ IgnitionLocation=https://api-int.$PrivateHostedZoneName:22623/config/master
 CertificateAuthorities=$( jq .ignition.security.tls.certificateAuthorities[0].source --raw-output $dir/master.ign )
 MasterInstanceType=t3a.xlarge
 
-file=ocp-master.json
+file=ocp-master-$Publish.json
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 sed --in-place s/InfrastructureName_Value/"$InfrastructureName"/ $dir/$file
 sed --in-place s/RhcosAmi_Value/"$RhcosAmi"/ $dir/$file

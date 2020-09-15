@@ -85,7 +85,7 @@ HostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$DomainN
 ```
 Creating networking and load balancing components in AWS:
 ```BASH
-file=ocp-route53.json
+file=ocp-route53-$Publish.json
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 sed --in-place s/ClusterName_Value/"$ClusterName"/ $dir/$file
 sed --in-place s/HostedZoneId_Value/"$HostedZoneId"/ $dir/$file

@@ -217,7 +217,7 @@ aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file:
 
 
 ```
-Initializing the bootstrap node on AWS with user-provisioned infrastructure:
+Once both stack creations are completed you can initialize the bootstrap node on AWS with user-provisioned infrastructure:
 ```BASH
 openshift-install-$version wait-for bootstrap-complete --dir $dir --log-level debug
 

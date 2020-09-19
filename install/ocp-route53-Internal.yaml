@@ -31,7 +31,7 @@ Parameters:
     AllowedValues:
       - External
       - Internal
-    Default: External
+    Default: Internal
   PrivateSubnets:
     Description: The internal subnets.
     Type: List<AWS::EC2::Subnet::Id>

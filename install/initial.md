@@ -97,3 +97,11 @@ Publish=External
 
 
 ```
+It is optionally a good idea to initialize a git repository to track control of the configuration files:
+```bash
+cd $dir && git init
+git add .
+git commit -m Initial
+
+
+```

@@ -51,6 +51,7 @@ do
   mv $binary $HOME/bin
 done
 mv openshift-install $HOME/bin/openshift-install-$version
+rm $HOME/bin/openshift-install
 ln -s $HOME/bin/openshift-install-$version $HOME/bin/openshift-install
 
 

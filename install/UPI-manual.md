@@ -217,6 +217,32 @@ aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file:
 
 
 ```
+In case you have configured your cluster not to be externally published then you need to continue the installation from inside the internal VPC.
+For that purpose you will create a new Cloud9 environment in a public subnet of the internal VPC if available.
+Otherwise you will need to create a bastion machine inside the private subnet and access the bastion through SSH.
+Anyway you will need to download the project files of your Cloud9 environment including the SSH keys and the AWS credentials:
+```bash
+cp -r $HOME/.ssh $dir/ssh
+cp -r $HOME/.aws $dir/aws
+export | grep -E "dir|Publish" 1> $HOME/environment/variables.sh
+
+
+```
+Once you have created the new Cloud9 environment then you can upload the previously downloaded project:
+```bash
+mv openshift.tar.gz  ..
+cd ..
+gunzip openshift.tar.gz
+tar xf openshift.tar
+rm openshift.tar
+source $HOME/environment/variables.sh
+mv $dir/.ssh $HOME
+mv $dir/.aws $HOME
+
+
+```
+Remember to disable AWS managed temporary credentials in AWS Cloud9 settings.
+
 Once both stack creations are completed you can initialize the bootstrap node on AWS with user-provisioned infrastructure:
 ```BASH
 openshift-install-$version wait-for bootstrap-complete --dir $dir --log-level debug

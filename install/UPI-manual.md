@@ -98,8 +98,8 @@ gunzip openshift.tar.gz
 tar xf openshift.tar
 rm openshift.tar
 source $HOME/environment/variables.sh
-mv $dir/.ssh $HOME
-mv $dir/.aws $HOME
+rm -rf $HOME/.ssh && mv $dir/.ssh $HOME
+rm -rf $HOME/.aws && mv $dir/.aws $HOME
 
 
 ```

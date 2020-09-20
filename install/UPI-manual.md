@@ -332,7 +332,7 @@ oc get clusteroperator
 ```
 After you complete the initial Operator configuration for the cluster, remove the bootstrap resources from Amazon Web Services (AWS):
 ```bash
-aws cloudformation delete-stack --stack-name ocp-bootstrap
+aws cloudformation delete-stack --stack-name ocp-bootstrap-$Publish
 
 
 ```

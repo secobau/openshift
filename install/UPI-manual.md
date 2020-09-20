@@ -134,7 +134,7 @@ file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json --capabilities CAPABILITY_NAMED_IAM
 
-git commit -am 'Creating networking and load balancing components in AWS'
+cd $dir && git commit -am 'Creating networking and load balancing components in AWS'
 
 
 ```
@@ -169,7 +169,7 @@ file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json --capabilities CAPABILITY_NAMED_IAM
 
-git commit -am 'Creating security group and roles in AWS'
+cd $dir && git commit -am 'Creating security group and roles in AWS'
 
 
 ```
@@ -214,7 +214,7 @@ file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json --capabilities CAPABILITY_NAMED_IAM
 
-git commit -am 'Creating the bootstrap node in AWS'
+cd $dir && git commit -am 'Creating the bootstrap node in AWS'
 
 
 ```
@@ -255,14 +255,14 @@ file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
 
-git commit -am 'Creating the control plane machines in AWS'
+cd $dir && git commit -am 'Creating the control plane machines in AWS'
 
 
 ```
 Once both stack creations are completed you can initialize the bootstrap node on AWS with user-provisioned infrastructure:
 ```BASH
 openshift-install-$version wait-for bootstrap-complete --dir $dir --log-level debug
-git commit -am 'Initialize the bootstrap node on AWS with user-provisioned infrastructure'
+cd $dir && git commit -am 'Initialize the bootstrap node on AWS with user-provisioned infrastructure'
 
 
 ```
@@ -292,7 +292,7 @@ file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
 
-git commit -am 'Creating the worker nodes in AWS'
+cd $dir && git commit -am 'Creating the worker nodes in AWS'
 
 
 ```
@@ -334,7 +334,7 @@ done
 Completing the AWS installation on user-provisioned infrastructure:
 ```bash
 openshift-install-$version wait-for install-complete --dir $dir --log-level debug
-git commit -am 'Completing the AWS installation on user-provisioned infrastructure'
+cd $dir && git commit -am 'Completing the AWS installation on user-provisioned infrastructure'
 
 
 ```

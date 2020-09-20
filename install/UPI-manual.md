@@ -19,6 +19,7 @@ cp $dir/install-config.yaml $dir/install-config.yaml.$( date +%F_%H%M )
 Now you generate the Kubernetes manifests for the cluster:
 ```BASH
 openshift-install-$version create manifests --dir $dir --log-level debug
+git add kubernetes openshift
 git commit -am 'Generate the Kubernetes manifests for the cluster'
 
 

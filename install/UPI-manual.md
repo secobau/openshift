@@ -90,7 +90,7 @@ export | grep -E " version=| ClusterName=| DomainName=| dir=| Publish=| VpcCidr=
 
 
 ```
-Once you have created the new Cloud9 environment you need to disable the AWS managed temporary credentials in AWS Cloud9 settings and upload the previously downloaded project:
+Once you have created the new Cloud9 environment you need to disable the AWS managed temporary credentials in AWS Cloud9 settings and upload the previously downloaded project. You will again need to download and install the client installer binaries:
 ```bash
 mv openshift.tar.gz  ..
 cd ..
@@ -100,6 +100,22 @@ rm openshift.tar
 source $HOME/environment/variables.sh
 rm -rf $HOME/.ssh && mv $dir/.ssh $HOME
 rm -rf $HOME/.aws && mv $dir/.aws $HOME
+
+for mode in client install
+do
+  wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$version/openshift-$mode-linux-$version.tar.gz
+  gunzip openshift-$mode-linux-$version.tar.gz
+  tar xf openshift-$mode-linux-$version.tar
+  rm openshift-$mode-linux-$version.tar
+done
+mkdir --parents $HOME/bin
+for binary in kubectl oc
+do
+  mv $binary $HOME/bin
+done
+mv openshift-install $HOME/bin/openshift-install-$version
+rm README.md $HOME/bin/openshift-install
+ln -s $HOME/bin/openshift-install-$version $HOME/bin/openshift-install
 
 
 ```

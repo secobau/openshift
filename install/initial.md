@@ -76,7 +76,7 @@ openshift-install-$version create install-config --dir $dir --log-level debug
 
 
 ```
-It is optionally a good idea to initialize a git repository to track control of the configuration files:
+It is optionally a good idea to initialize a git repository to track history of the configuration files:
 ```bash
 cd $dir && git init
 git add .
@@ -89,11 +89,6 @@ The following script will modify the EC2 instance type so as to choose the cheap
 cd $dir
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/fix-config.sh
 chmod +x fix-config.sh && ./fix-config.sh
-
-
-```
-If you have created a git repository now you can commit the changes:
-```bash
 git commit -am 'Set EC2 instance type'
 
 
@@ -108,11 +103,6 @@ sed --in-place s/External/$Publish/ $dir/install-config.yaml
 Otherwise set the publish option to be external:
 ```bash
 export Publish=External
-
-
-```
-If you have created a git repository now you can commit the changes:
-```bash
 git commit -am 'Set Publish value'
 
 

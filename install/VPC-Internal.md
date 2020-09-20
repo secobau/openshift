@@ -29,6 +29,7 @@ networking:
 
 
 ```
-
-Now you can proceed with the final step:
-* https://github.com/secobau/openshift/blob/master/install/final.md
+Now you can proceed with the following steps:
+* https://github.com/secobau/openshift/blob/master/install/create.md
+* https://github.com/secobau/openshift/blob/master/install/certs.md
+* https://github.com/secobau/openshift/blob/master/install/scc.md

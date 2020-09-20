@@ -19,7 +19,7 @@ cp $dir/install-config.yaml $dir/install-config.yaml.$( date +%F_%H%M )
 Now you generate the Kubernetes manifests for the cluster:
 ```BASH
 openshift-install-$version create manifests --dir $dir --log-level debug
-git add manifests openshift
+git add .
 git commit -am 'Generate the Kubernetes manifests for the cluster'
 
 
@@ -74,6 +74,7 @@ sed --in-place s/SubnetBits_Value/"$SubnetBits"/ $dir/$file
 file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
+git add .
 git commit -am 'Creating a VPC in AWS'
 
 

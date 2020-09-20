@@ -86,7 +86,7 @@ Anyway you will need to download the project files of your Cloud9 environment in
 ```bash
 mv $HOME/.ssh $dir
 mv $HOME/.aws $dir
-export | grep -E "version=|ClusterName=|DomainName=|dir=|Publish=|VpcCidr=|AvailabilityZoneCount=|SubnetBits=" 1> $HOME/environment/variables.sh
+export | grep -E " version=| ClusterName=| DomainName=| dir=| Publish=| VpcCidr=| AvailabilityZoneCount=| SubnetBits=" 1> $HOME/environment/variables.sh
 
 
 ```

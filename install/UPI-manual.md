@@ -324,7 +324,13 @@ oc get csr -o go-template='{{range .items}}{{if not .status}}{{.metadata.name}}{
 
 
 ```
-Deleting the bootstrap resources:
+Watch the cluster components come online:
+```bash
+oc get clusteroperator
+
+
+```
+After you complete the initial Operator configuration for the cluster, remove the bootstrap resources from Amazon Web Services (AWS):
 ```bash
 aws cloudformation delete-stack --stack-name ocp-bootstrap
 

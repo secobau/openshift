@@ -134,7 +134,7 @@ file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json --capabilities CAPABILITY_NAMED_IAM
 
-cd $dir && git commit -am 'Creating networking and load balancing components in AWS'
+cd $dir && git add . && git commit -am 'Creating networking and load balancing components in AWS'
 
 
 ```

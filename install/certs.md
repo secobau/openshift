@@ -66,3 +66,4 @@ In order to substitute the self-signed certificate by a valid one:
   
   
   ```
+  1. https://stackoverflow.com/questions/46234295/kubectl-unable-to-connect-to-server-x509-certificate-signed-by-unknown-authori/63518617#63518617

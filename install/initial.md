@@ -79,6 +79,8 @@ openshift-install-$version create install-config --dir $dir --log-level debug
 It is optionally a good idea to initialize a git repository to track history of the configuration files:
 ```bash
 cd $dir && git init
+git config --global user.name "Your Name"
+git config --global user.email you@example.com
 git add .
 git commit -m Initial
 

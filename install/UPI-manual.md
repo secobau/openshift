@@ -6,10 +6,11 @@ After the previous step is finished then you may proceed.
 Set the number of compute replicas to zero:
 ```bash
 sed --in-place /compute/,/controlPlane/s/\ 3/\ 0/ $dir/install-config.yaml
+git commit -am 'Set the number of compute replicas to zero'
 
 
 ```
-It is a good idea to make a copy of your configuration file:
+It is a good idea to make a copy of your configuration file if you are not using git:
 ```bash
 cp $dir/install-config.yaml $dir/install-config.yaml.$( date +%F_%H%M )
 
@@ -18,44 +19,50 @@ cp $dir/install-config.yaml $dir/install-config.yaml.$( date +%F_%H%M )
 Now you generate the Kubernetes manifests for the cluster:
 ```BASH
 openshift-install-$version create manifests --dir $dir --log-level debug
+git commit -am 'Generate the Kubernetes manifests for the cluster'
 
 
 ```
 Remove the Kubernetes manifest files that define the control plane machines:
 ```BASH
 rm --force $dir/openshift/99_openshift-cluster-api_master-machines-*.yaml
+git commit -am 'Remove the Kubernetes manifest files that define the control plane machines'
 
 
 ```
 Remove the Kubernetes manifest files that define the worker machines:
 ```BASH
 rm --force $dir/openshift/99_openshift-cluster-api_worker-machineset-*.yaml
+git commit -am 'Remove the Kubernetes manifest files that define the worker machines'
 
 
 ```
 Prevent Pods from being scheduled on the control plane machines:
 ```bash
 sed --in-place /mastersSchedulable/s/true/false/ $dir/manifests/cluster-scheduler-02-config.yml
+git commit -am 'Prevent Pods from being scheduled on the control plane machines'
 
 
 ```
 If you do not want the Ingress Operator to create DNS records on your behalf, remove the privateZone and publicZone sections from the DNS configuration file:
 ```bash
 sed --in-place /privateZone:/,/id:/d $dir/manifests/cluster-dns-02-config.yml
+git commit -am 'Remove the privateZone and publicZone sections from the DNS configuration file'
 
 
 ```
 Obtain the Ignition config files:
 ```BASH
 openshift-install-$version create ignition-configs --dir $dir --log-level debug
+git commit -am 'Obtain the Ignition config files'
 
 
 ```
 Creating a VPC in AWS:
 ```BASH
-VpcCidr=10.0.0.0/16
-AvailabilityZoneCount=3
-SubnetBits=13
+export VpcCidr=10.0.0.0/16
+export AvailabilityZoneCount=3
+export SubnetBits=13
 
 file=ocp-vpc.json
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
@@ -66,19 +73,20 @@ sed --in-place s/SubnetBits_Value/"$SubnetBits"/ $dir/$file
 file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
+git commit -am 'Creating a VPC in AWS'
 
 
 ```
 Once the stack creation is completed you can get the following values:
 ```BASH
-PrivateSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )"
-PublicSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )"
-VpcId="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[2].OutputValue --output text )"
+export PrivateSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )"
+export PublicSubnets="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )"
+export VpcId="$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[2].OutputValue --output text )"
 
 sudo yum install --assumeyes jq
 
-InfrastructureName="$( jq --raw-output .infraID $dir/metadata.json )"
-HostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
+export InfrastructureName="$( jq --raw-output .infraID $dir/metadata.json )"
+export HostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
 
 
 ```
@@ -100,22 +108,24 @@ file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json --capabilities CAPABILITY_NAMED_IAM
 
+git commit -am 'Creating networking and load balancing components in AWS'
+
 
 ```
 Once the stack creation is completed you can get the following values:
 ```BASH
 if test $Publish = External
 then
-ExternalApiTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )
-InternalApiTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )
-PrivateHostedZoneId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[3].OutputValue --output text )
-RegisterNlbIpTargetsLambdaArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[5].OutputValue --output text )
-InternalServiceTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[6].OutputValue --output text )
+export ExternalApiTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )
+export InternalApiTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )
+export PrivateHostedZoneId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[3].OutputValue --output text )
+export RegisterNlbIpTargetsLambdaArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[5].OutputValue --output text )
+export InternalServiceTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[6].OutputValue --output text )
 else
-InternalApiTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )
-PrivateHostedZoneId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[2].OutputValue --output text )
-RegisterNlbIpTargetsLambdaArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[4].OutputValue --output text )
-InternalServiceTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[5].OutputValue --output text )
+export InternalApiTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )
+export PrivateHostedZoneId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[2].OutputValue --output text )
+export RegisterNlbIpTargetsLambdaArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[4].OutputValue --output text )
+export InternalServiceTargetGroupArn=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[5].OutputValue --output text )
 fi
 
 
@@ -133,24 +143,26 @@ file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json --capabilities CAPABILITY_NAMED_IAM
 
+git commit -am 'Creating security group and roles in AWS'
+
 
 ```
 Once the stack creation is completed you can get the following values:
 ```BASH
-MasterSecurityGroupId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )
-MasterInstanceProfileName=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )
-WorkerSecurityGroupId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[2].OutputValue --output text )
-WorkerInstanceProfileName=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[3].OutputValue --output text )
+export MasterSecurityGroupId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[0].OutputValue --output text )
+export MasterInstanceProfileName=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[1].OutputValue --output text )
+export WorkerSecurityGroupId=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[2].OutputValue --output text )
+export WorkerInstanceProfileName=$( aws cloudformation describe-stacks --stack-name ${file%.yaml} --query Stacks[].Outputs[3].OutputValue --output text )
 
 
 ```
 Creating the bootstrap node in AWS:
 ```BASH
-RhcosAmi=ami-0754b15d212830477
-AllowedBootstrapSshCidr=0.0.0.0/0
-BootstrapIgnitionLocation=s3://$InfrastructureName/bootstrap.ign
-AutoRegisterELB=yes
-PublicSubnet=$( echo $PublicSubnets | cut --delimiter , --field 1 )
+export RhcosAmi=ami-0754b15d212830477
+export AllowedBootstrapSshCidr=0.0.0.0/0
+export BootstrapIgnitionLocation=s3://$InfrastructureName/bootstrap.ign
+export AutoRegisterELB=yes
+export PublicSubnet=$( echo $PublicSubnets | cut --delimiter , --field 1 )
 
 aws s3 mb s3://$InfrastructureName
 aws s3 cp $dir/bootstrap.ign $BootstrapIgnitionLocation
@@ -176,18 +188,20 @@ file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json --capabilities CAPABILITY_NAMED_IAM
 
+git commit -am 'Creating the bootstrap node in AWS'
+
 
 ```
 Creating the control plane machines in AWS:
 ```BASH
-AutoRegisterDNS=yes
-PrivateHostedZoneName=$ClusterName.$DomainName
-Master0Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 1 )
-Master1Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 2 )
-Master2Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 3 )
-IgnitionLocation=https://api-int.$PrivateHostedZoneName:22623/config/master
-CertificateAuthorities=$( jq .ignition.security.tls.certificateAuthorities[0].source --raw-output $dir/master.ign )
-MasterInstanceType=t3a.xlarge
+export AutoRegisterDNS=yes
+export PrivateHostedZoneName=$ClusterName.$DomainName
+export Master0Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 1 )
+export Master1Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 2 )
+export Master2Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 3 )
+export IgnitionLocation=https://api-int.$PrivateHostedZoneName:22623/config/master
+export CertificateAuthorities=$( jq .ignition.security.tls.certificateAuthorities[0].source --raw-output $dir/master.ign )
+export MasterInstanceType=t3a.xlarge
 
 file=ocp-master-$Publish.json
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
@@ -214,6 +228,8 @@ test $Publish = External && sed --in-place s/ExternalApiTargetGroupArn_Value/"$(
 file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
+
+git commit -am 'Creating the control plane machines in AWS'
 
 
 ```
@@ -246,17 +262,18 @@ Remember to disable AWS managed temporary credentials in AWS Cloud9 settings.
 Once both stack creations are completed you can initialize the bootstrap node on AWS with user-provisioned infrastructure:
 ```BASH
 openshift-install-$version wait-for bootstrap-complete --dir $dir --log-level debug
+git commit -am 'Initialize the bootstrap node on AWS with user-provisioned infrastructure'
 
 
 ```
 Creating the worker nodes in AWS:
 ```BASH
-IgnitionLocation=https://api-int.$PrivateHostedZoneName:22623/config/worker
-CertificateAuthorities=$( jq .ignition.security.tls.certificateAuthorities[0].source --raw-output $dir/worker.ign )
-WorkerInstanceType=t3a.large
-Worker0Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 1 )
-Worker1Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 2 )
-Worker2Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 3 )
+export IgnitionLocation=https://api-int.$PrivateHostedZoneName:22623/config/worker
+export CertificateAuthorities=$( jq .ignition.security.tls.certificateAuthorities[0].source --raw-output $dir/worker.ign )
+export WorkerInstanceType=t3a.large
+export Worker0Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 1 )
+export Worker1Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 2 )
+export Worker2Subnet=$( echo $PrivateSubnets | cut --delimiter , --field 3 )
 
 file=ocp-worker.json
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
@@ -274,6 +291,8 @@ sed --in-place s/Subnet2_Value/"$Worker2Subnet"/ $dir/$file
 file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
+
+git commit -am 'Creating the worker nodes in AWS'
 
 
 ```
@@ -297,12 +316,12 @@ aws cloudformation delete-stack --stack-name ocp-bootstrap
 ```
 Creating the Ingress DNS Records:
 ```bash
-routes="$( oc get --all-namespaces -o jsonpath='{range .items[*]}{range .status.ingress[*]}{.host}{"\n"}{end}{end}' routes | cut --delimiter . --field 1 )"
-hostname=$( oc -n openshift-ingress get service router-default -o custom-columns=:.status.loadBalancer.ingress[].hostname --no-headers )
-CanonicalHostedZoneNameID=$( aws elb describe-load-balancers | jq -r '.LoadBalancerDescriptions[] | select(.DNSName == "'$hostname'").CanonicalHostedZoneNameID' )
-PrivateHostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$ClusterName.$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
+export routes="$( oc get --all-namespaces -o jsonpath='{range .items[*]}{range .status.ingress[*]}{.host}{"\n"}{end}{end}' routes | cut --delimiter . --field 1 )"
+export hostname=$( oc -n openshift-ingress get service router-default -o custom-columns=:.status.loadBalancer.ingress[].hostname --no-headers )
+export CanonicalHostedZoneNameID=$( aws elb describe-load-balancers | jq -r '.LoadBalancerDescriptions[] | select(.DNSName == "'$hostname'").CanonicalHostedZoneNameID' )
+export PrivateHostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$ClusterName.$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
 
-test $Publish = External && PublicHostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
+test $Publish = External && export PublicHostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$DomainName." --raw-output '.HostedZones | .[] | select(.Name=="\($name)") | .Id' | cut --delimiter / --field 3 )"
 
 for route in $routes
 do
@@ -312,9 +331,10 @@ done
 
 
 ```
-Completing an AWS installation on user-provisioned infrastructure:
+Completing the AWS installation on user-provisioned infrastructure:
 ```bash
 openshift-install-$version wait-for install-complete --dir $dir --log-level debug
+git commit -am 'Completing the AWS installation on user-provisioned infrastructure'
 
 
 ```

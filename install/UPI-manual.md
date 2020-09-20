@@ -65,13 +65,13 @@ export VpcCidr=10.0.0.0/16
 export AvailabilityZoneCount=3
 export SubnetBits=13
 
-file=ocp-vpc.json
+export file=ocp-vpc.json
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 sed --in-place s/VpcCidr_Value/"$( echo $VpcCidr | sed 's/\//\\\//g' )"/ $dir/$file
 sed --in-place s/AvailabilityZoneCount_Value/"$AvailabilityZoneCount"/ $dir/$file
 sed --in-place s/SubnetBits_Value/"$SubnetBits"/ $dir/$file
 
-file=${file%.json}.yaml
+export file=${file%.json}.yaml
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
 aws cloudformation create-stack --stack-name ${file%.yaml} --template-body file://$dir/$file --parameters file://$dir/${file%.yaml}.json
 git add .
@@ -86,7 +86,7 @@ Anyway you will need to download the project files of your Cloud9 environment in
 ```bash
 mv $HOME/.ssh $dir
 mv $HOME/.aws $dir
-export | grep -E " version=| ClusterName=| DomainName=| dir=| Publish=| VpcCidr=| AvailabilityZoneCount=| SubnetBits=" 1> $HOME/environment/variables.sh
+export | grep -E " version=| ClusterName=| DomainName=| dir=| Publish=| VpcCidr=| AvailabilityZoneCount=| SubnetBits=| file=" 1> $HOME/environment/variables.sh
 
 
 ```

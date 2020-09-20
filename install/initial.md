@@ -88,7 +88,7 @@ The following script will modify the EC2 instance type so as to choose the cheap
 ```bash
 cd $dir
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/fix-config.sh
-chmod +x fix-config.sh && ./fix-config.sh
+chmod +x fix-config.sh && ./fix-config.sh && rm fix-config.sh
 git commit -am 'Set EC2 instance type'
 
 

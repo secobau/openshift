@@ -360,6 +360,9 @@ cd $dir && git commit -am 'Completing the AWS installation on user-provisioned i
 
 
 ```
+Now you can optionally customize the default certificates:
+* https://github.com/secobau/openshift/blob/master/install/certs.md
+
 #### Credits
 
 This documentation is based on this: https://docs.openshift.com/container-platform/4.5/installing/installing_aws/installing-aws-user-infra.html

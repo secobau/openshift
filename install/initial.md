@@ -32,7 +32,7 @@ ssh-add $HOME/.ssh/id_rsa
 ```
 Choose a version number:
 ```bash
-version=4.5.9
+export version=4.5.9
 
 
 ```
@@ -65,7 +65,7 @@ export DomainName=sebastian-colomar.es
 ```
 Create a directory to place all the configuration files:
 ```bash
-dir="$HOME/environment/openshift/install/$ClusterName.$DomainName"
+export dir="$HOME/environment/openshift/install/$ClusterName.$DomainName"
 test -d $dir || mkdir --parents $dir
 
 
@@ -86,14 +86,14 @@ chmod +x fix-config.sh && ./fix-config.sh
 ```
 If you wish your cluster to be private and not accessible from the external network:
 ```bash
-Publish=Internal
+export Publish=Internal
 sed --in-place s/External/$Publish/ $dir/install-config.yaml
 
 
 ```
 Otherwise set the publish option to be external:
 ```bash
-Publish=External
+export Publish=External
 
 
 ```

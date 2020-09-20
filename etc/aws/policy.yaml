@@ -209,6 +209,7 @@ Resources:
           - iam:RemoveRoleFromInstanceProfile
           - iam:SimulatePrincipalPolicy
           - iam:TagRole
+          - iam:UntagRole
           Resource: '*'
         - 
           Effect: Allow
@@ -389,6 +390,7 @@ Resources:
           - iam:ListAccessKeys
           - iam:PutUserPolicy
           - iam:TagUser
+          - iam:UntagUser
           Resource: '*'
         - 
           Effect: Allow

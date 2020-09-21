@@ -7,20 +7,24 @@
    docker swarm init
    
    project=spring-petclinic
+   test -f $project.yaml && rm -f $project.yaml
    wget https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/swarm/$project.yaml
    sed --in-place /node/s/worker/manager/ $project.yaml
    docker stack deploy -c $project.yaml $project
    docker service ls
 
    docker stack rm $project
+   test -f $project.yaml && rm -f $project.yaml
 
    project=dockercoins
+   test -f $project.yaml && rm -f $project.yaml
    wget https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/swarm/$project.yaml
    sed --in-place /node/s/worker/manager/ $project.yaml
    docker stack deploy -c $project.yaml $project
    docker service ls
 
    docker stack rm $project
+   test -f $project.yaml && rm -f $project.yaml
    
    
    ``` 

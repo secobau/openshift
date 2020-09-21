@@ -9,10 +9,12 @@
    sed --in-place /node/s/worker/manager/ spring-petclinic.yaml
    docker stack deploy -c spring-petclinic.yaml spring-petclinic
    docker service ls
-   docker stack rm spring-petclinic
+
    wget https://raw.githubusercontent.com/secobau/dockercoins/openshift/etc/docker/swarm/dockercoins.yaml
    docker stack deploy -c dockercoins.yaml dockercoins
    docker service ls
+   
+   docker stack rm spring-petclinic
    docker stack rm dockercoins
    
    

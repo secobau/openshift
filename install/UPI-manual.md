@@ -1,5 +1,5 @@
 First follow these instructions:
-* https://github.com/secobau/openshift/blob/master/install/initial.md
+* [Initial setup](initial.md)
 
 After the previous step is finished then you may proceed.
 
@@ -361,7 +361,7 @@ cd $dir && git commit -am 'Completing the AWS installation on user-provisioned i
 
 ```
 Now you can optionally customize the default certificates:
-* https://github.com/secobau/openshift/blob/master/install/certs.md
+* [Customize certificates](certs.md)
 
 #### Credits
 

@@ -1,5 +1,5 @@
 First follow these instructions:
-* https://github.com/secobau/openshift/blob/master/install/initial.md
+* [Initial setup](initial.md)
 
 Be sure to enable the following features in the VPC configuration in case your cluster is private:
 ```bash
@@ -30,6 +30,6 @@ networking:
 
 ```
 Now you can proceed with the following steps:
-* https://github.com/secobau/openshift/blob/master/install/create.md
-* https://github.com/secobau/openshift/blob/master/install/certs.md
-* https://github.com/secobau/openshift/blob/master/install/scc.md
+* [Create cluster](create.md)
+* [Customize certificates](certs.md)
+* [Security Context Constraints](scc.md)

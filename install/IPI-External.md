@@ -1,4 +1,4 @@
-* https://github.com/secobau/openshift/blob/master/install/initial.md
-* https://github.com/secobau/openshift/blob/master/install/created.md
-* https://github.com/secobau/openshift/blob/master/install/certs.md
-* https://github.com/secobau/openshift/blob/master/install/scc.md
+1. [Initial setup](initial.md)
+1. [Create cluster](create.md)
+1. [Customize certificates](certs.md)
+1. [Security Context Constraints)(scc.md)

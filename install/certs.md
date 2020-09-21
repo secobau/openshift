@@ -1,5 +1,5 @@
 In order to substitute the self-signed certificate by a valid one:
-* https://docs.openshift.com/container-platform/4.4/authentication/certificates/replacing-default-ingress-certificate.html
+* https://docs.openshift.com/container-platform/4.5/authentication/certificates/replacing-default-ingress-certificate.html
   
   1. If you need to generate LetsEncrypt certificates you can run this script:
   ```bash
@@ -39,7 +39,7 @@ In order to substitute the self-signed certificate by a valid one:
 
   ```
 
-* https://docs.openshift.com/container-platform/4.4/authentication/certificates/api-server.html
+* https://docs.openshift.com/container-platform/4.5/authentication/certificates/api-server.html
 
   1. If you need to generate LetsEncrypt certificates you can run this script:
   ```bash

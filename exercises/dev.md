@@ -7,8 +7,9 @@
    docker swarm init
    
    project=spring-petclinic
+   release=v0.6
    test -f $project.yaml && rm -f $project.yaml
-   wget https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/swarm/$project.yaml
+   wget https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/swarm/$project.yaml
    sed --in-place /node/s/worker/manager/ $project.yaml
    docker stack deploy -c $project.yaml $project
    docker service ls
@@ -17,8 +18,9 @@
    test -f $project.yaml && rm -f $project.yaml
 
    project=dockercoins
+   release=v1.7
    test -f $project.yaml && rm -f $project.yaml
-   wget https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/swarm/$project.yaml
+   wget https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/swarm/$project.yaml
    sed --in-place /node/s/worker/manager/ $project.yaml
    docker stack deploy -c $project.yaml $project
    docker service ls
@@ -42,21 +44,23 @@
    user=dev-x
    
    project=spring-petclinic
+   release=v0.6
    
    oc new-project $project-$user
-   oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/kubernetes/$project.yaml
+   oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/$project.yaml
    oc get deployment -n $project-$user
    
-   oc delete -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/kubernetes/$project.yaml
+   oc delete -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/$project.yaml
    oc delete project $project-$user
    
    project=dockercoins
+   release=v1.7
    
    oc new-project $project-$user
-   oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/kubernetes/$project.yaml
+   oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/$project.yaml
    oc get deployment -n $project-$user
    
-   oc delete -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/kubernetes/$project.yaml
+   oc delete -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/$project.yaml
    oc delete project $project-$user
 
 
@@ -70,12 +74,13 @@
    user=dev-x
    
    project=docker-xwiki
+   release=v1.0
    
    oc new-project $project-$user
-   oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/kubernetes/$project.yaml
+   oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/$project.yaml
    oc get deployment -n $project-$user
    
-   oc delete -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/kubernetes/$project.yaml
+   oc delete -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/$project.yaml
    oc delete project $project-$user
 
 

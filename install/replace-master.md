@@ -1,7 +1,7 @@
 ## How to replace a master Machine by a new master MachineSet
 
 1. Create a new master MachineSet based on this template:
-   * https://github.com/secobau/openshift/blob/master/install/machineSet.yaml
+   * [MachineSet template](machineSet.yaml)
 1. Delete the master Machine you want to replace.
 1. Monitor the pods for all projects until the cluster is stable.
 Only etcd-quorum-guard Pod should remain in a pending state. 

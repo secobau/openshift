@@ -5,18 +5,22 @@
    In order to deploy petclinic and dockercoins in AWS Cloud9:
    ```bash
    docker swarm init
-   wget https://raw.githubusercontent.com/secobau/spring-petclinic/openshift/etc/docker/swarm/spring-petclinic.yaml
-   sed --in-place /node/s/worker/manager/ spring-petclinic.yaml
-   docker stack deploy -c spring-petclinic.yaml spring-petclinic
-   docker service ls
-
-   docker stack rm spring-petclinic
-
-   wget https://raw.githubusercontent.com/secobau/dockercoins/openshift/etc/docker/swarm/dockercoins.yaml
-   docker stack deploy -c dockercoins.yaml dockercoins
-   docker service ls
    
-   docker stack rm dockercoins
+   project=spring-petclinic
+   wget https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/swarm/$project.yaml
+   sed --in-place /node/s/worker/manager/ $project.yaml
+   docker stack deploy -c $project.yaml $project
+   docker service ls
+
+   docker stack rm $project
+
+   project=dockercoins
+   wget https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/swarm/$project.yaml
+   sed --in-place /node/s/worker/manager/ $project.yaml
+   docker stack deploy -c $project.yaml $project
+   docker service ls
+
+   docker stack rm $project
    
    
    ``` 

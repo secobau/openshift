@@ -1,5 +1,5 @@
 First follow these instructions:
-* https://github.com/secobau/openshift/blob/master/install/initial.yaml
+* [Initial setup](initial.md)
 
 In case you want to install your cluster in an already existing VPC then you will need to add the subnet IDs to the platform.aws.subnets field:
 ```bash
@@ -29,6 +29,6 @@ networking:
 
 ```
 Now you can proceed with the following steps:
-* https://github.com/secobau/openshift/blob/master/install/create.md
-* https://github.com/secobau/openshift/blob/master/install/certs.md
-* https://github.com/secobau/openshift/blob/master/install/scc.md
+* [Create cluster](create.md)
+* [Customize certificates](certs.md)
+* [Security Context Constraints](scc.md)

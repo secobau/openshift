@@ -53,17 +53,17 @@
    user=dev-x
    
    project=spring-petclinic
-   release=v0.6
+   release=v0.7
    
    oc new-project $project-$user
-   oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/$project.yaml
+   oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/openshift/$project.yaml
    oc get deployment -n $project-$user
    
-   oc delete -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/$project.yaml
+   oc delete -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/openshift/$project.yaml
    oc delete project $project-$user
    
    project=dockercoins
-   release=v1.7
+   release=v1.9
    
    oc new-project $project-$user
    oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/$project.yaml
@@ -98,7 +98,7 @@
    * https://github.com/secobau/nginx
    * https://hub.docker.com/r/secobau/nginx
 
-   1. In order to deploy phpinfo in Red Hat Openshift:
+   1. In order to deploy proxy2aws in Red Hat Openshift:
       ```bash
       user=dev-x
 
@@ -113,7 +113,7 @@
 
 
       ```
-   1. In order to deploy phpinfo in Red Hat Openshift through templates:
+   1. In order to deploy proxy2aws in Red Hat Openshift through templates:
       ```bash
       user=dev-x
 

@@ -1,5 +1,6 @@
 1. https://github.com/spring-projects/spring-petclinic
 1. https://github.com/dockersamples/dockercoins
+   * https://containers.goffinet.org/images/dockercoins-diagram.svg
 1. https://ap-south-1.console.aws.amazon.com/cloud9
    
    In order to deploy petclinic and dockercoins in AWS Cloud9:

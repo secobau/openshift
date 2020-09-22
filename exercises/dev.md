@@ -66,10 +66,10 @@
    release=v1.9
    
    oc new-project $project-$user
-   oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/$project.yaml
+   oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/openshift/$project.yaml
    oc get deployment -n $project-$user
    
-   oc delete -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/$project.yaml
+   oc delete -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/openshift/$project.yaml
    oc delete project $project-$user
 
 
@@ -86,10 +86,10 @@
    release=v1.0
    
    oc new-project $project-$user
-   oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/$project.yaml
+   oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/openshift/$project.yaml
    oc get deployment -n $project-$user
    
-   oc delete -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/$project.yaml
+   oc delete -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/openshift/$project.yaml
    oc delete project $project-$user
 
 

@@ -53,6 +53,7 @@ done
 mv openshift-install $HOME/bin/openshift-install-$version
 rm README.md $HOME/bin/openshift-install
 ln -s $HOME/bin/openshift-install-$version $HOME/bin/openshift-install
+rm $HOME/bin/kubectl && ln -s $HOME/bin/oc $HOME/bin/kubectl    
 
 
 ```

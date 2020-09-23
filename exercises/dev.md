@@ -100,12 +100,13 @@
       user=dev-x
 
       project=proxy2aws
+      release=openshift
 
       oc new-project $project-$user
-      oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/kubernetes/openshift/$project.yaml
+      oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/openshift/$project.yaml
       oc get deployment -n $project-$user
 
-      oc delete -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/kubernetes/openshift/$project.yaml
+      oc delete -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/openshift/$project.yaml
       oc delete project $project-$user
 
 
@@ -115,12 +116,13 @@
       user=dev-x
 
       project=proxy2aws
+      release=openshift
 
       oc new-project $project-$user
-      oc process -f https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/kubernetes/openshift/templates/$project.yaml | oc apply -n $project-$user -f -
+      oc process -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/openshift/templates/$project.yaml | oc apply -n $project-$user -f -
       oc get deployment -n $project-$user
 
-      oc process -f https://raw.githubusercontent.com/secobau/$project/openshift/etc/docker/kubernetes/openshift/templates/$project.yaml | oc delete -n $project-$user -f -
+      oc process -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/openshift/templates/$project.yaml | oc delete -n $project-$user -f -
       oc delete project $project-$user
 
 

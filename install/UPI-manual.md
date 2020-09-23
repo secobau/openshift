@@ -84,8 +84,8 @@ For that purpose you will create a new Cloud9 environment in a public subnet of 
 Otherwise you will need to create a bastion machine inside the private subnet and access the bastion through SSH.
 Anyway you will need to download the project files of your Cloud9 environment including the SSH keys and the AWS credentials:
 ```bash
-mv $HOME/.ssh $dir
-mv $HOME/.aws $dir
+cp -r $HOME/.ssh $dir
+cp -r $HOME/.aws $dir
 export | grep -E " version=| ClusterName=| DomainName=| dir=| Publish=| VpcCidr=| AvailabilityZoneCount=| SubnetBits=| file=" 1> $HOME/environment/variables.sh
 
 

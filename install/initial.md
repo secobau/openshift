@@ -100,13 +100,13 @@ If you wish your cluster to be private and not accessible from the external netw
 ```bash
 export Publish=Internal
 sed --in-place s/External/$Publish/ $dir/install-config.yaml
+git commit -am 'Set Publish value'
 
 
 ```
 Otherwise set the publish option to be external:
 ```bash
 export Publish=External
-git commit -am 'Set Publish value'
 
 
 ```

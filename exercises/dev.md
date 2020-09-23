@@ -32,19 +32,15 @@
    
    ``` 
 1. https://console-openshift-console.apps.openshift.sebastian-colomar.es
+   * https://oauth-openshift.apps.openshift.sebastian-colomar.es/oauth/token/request
+
+   In order to access the Openshift cluster from AWS Cloud9 terminal:
    ```bash
    wget https://downloads-openshift-console.apps.openshift.sebastian-colomar.es/amd64/linux/oc.tar
    tar xf oc.tar
    mkdir $HOME/bin
    mv oc $HOME/bin
    oc version 
-   
-   
-   ```
-1. https://oauth-openshift.apps.openshift.sebastian-colomar.es/oauth/token/request
-
-   In order to access the Openshift cluster from AWS Cloud9 terminal:
-   ```bash
    oc login --token=xxx-yyy --server=https://api.openshift.sebastian-colomar.es:6443
    
    

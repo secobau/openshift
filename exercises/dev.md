@@ -73,14 +73,14 @@
    ```
 1. Troubleshooting Dockercoins   
 1. https://github.com/xwiki-contrib/docker-xwiki
-   * https://github.com/secobau/docker-xwiki/tree/v1.0
+   * https://github.com/secobau/docker-xwiki/tree/v2.3
 
    In order to deploy xwiki in Red Hat Openshift:
    ```bash
    user=dev-x
    
    project=docker-xwiki
-   release=v2.2
+   release=v2.3
    
    oc new-project $project-$user
    oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/openshift/$project.yaml

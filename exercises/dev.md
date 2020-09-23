@@ -80,7 +80,7 @@
    user=dev-x
    
    project=docker-xwiki
-   release=v2.3
+   release=v2.4
    
    oc new-project $project-$user
    oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/openshift/$project.yaml

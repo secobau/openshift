@@ -8,7 +8,7 @@
    docker swarm init
    
    project=spring-petclinic
-   release=v0.6
+   release=v0.7
    test -f $project.yaml && rm -f $project.yaml
    wget https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/swarm/$project.yaml
    sed --in-place /node/s/worker/manager/ $project.yaml

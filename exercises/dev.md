@@ -19,7 +19,7 @@
    test -f $project.yaml && rm -f $project.yaml
 
    project=dockercoins
-   release=v1.7
+   release=v2.0
    test -f $project.yaml && rm -f $project.yaml
    wget https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/swarm/$project.yaml
    sed --in-place /node/s/worker/manager/ $project.yaml
@@ -60,7 +60,7 @@
    oc delete project $project-$user
    
    project=dockercoins
-   release=v1.9
+   release=v2.0
    
    oc new-project $project-$user
    oc apply -n $project-$user -f https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/kubernetes/openshift/$project.yaml

@@ -31,6 +31,69 @@
    
    
    ``` 
+1. https://labs.play-with-docker.com/
+   ```
+   docker swarm init
+   
+   ########################
+   project=spring-petclinic
+   release=v0.7
+   test -f $project.yaml && rm -f $project.yaml
+   wget https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/swarm/$project.yaml
+   docker stack deploy -c $project.yaml $project
+   docker service ls
+   
+   docker stack rm $project
+   test -f $project.yaml && rm -f $project.yaml
+
+   ########################
+   project=dockercoins
+   release=v2.0
+   test -f $project.yaml && rm -f $project.yaml
+   wget https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/swarm/$project.yaml
+   docker stack deploy -c $project.yaml $project
+   docker service ls
+
+   docker stack rm $project
+   test -f $project.yaml && rm -f $project.yaml
+   
+   ########################
+   project=phpinfo
+   release=v1.5
+   test -f $project.yaml && rm -f $project.yaml
+   wget https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/swarm/$project.yaml
+   docker stack deploy -c $project.yaml $project
+   docker service ls
+
+   docker stack rm $project
+   test -f $project.yaml && rm -f $project.yaml
+   
+   ########################
+   project=nlb
+   release=v1.3
+
+   file=nlb.conf
+   path=run/configs/etc/nginx/conf.d
+   wget https://raw.githubusercontent.com/secobau/$project/$release/$path/$file
+   mkdir -p /$path
+   mv $file /$path
+
+   file=nginx.conf
+   path=run/configs/etc/nginx
+   wget https://raw.githubusercontent.com/secobau/$project/$release/$path/$file
+   mkdir -p /$path
+   mv $file /$path
+
+   test -f $project.yaml && rm -f $project.yaml
+   wget https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/swarm/$project.yaml
+   docker stack deploy -c $project.yaml $project
+   docker service ls
+
+   docker stack rm $project
+   test -f $project.yaml && rm -f $project.yaml
+   
+
+   ```
 1. https://console-openshift-console.apps.openshift.sebastian-colomar.es
    * https://oauth-openshift.apps.openshift.sebastian-colomar.es/oauth/token/request
 

@@ -81,6 +81,7 @@
 
    ```
    * https://github.com/secobau/nlb
+   * https://github.com/secobau/nginx
    ```bash
    project=nlb
    release=v1.3

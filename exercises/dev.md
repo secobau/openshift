@@ -38,6 +38,7 @@
    
    ```
    * https://github.com/secobau/spring-petclinic
+   * https://hub.docker.com/repository/docker/secobau/spring-petclinic
    ```bash
    project=spring-petclinic
    release=v0.7

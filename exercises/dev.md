@@ -32,10 +32,13 @@
    
    ``` 
 1. https://labs.play-with-docker.com/
-   ```
+   ```bash
    docker swarm init
    
-   ########################
+   
+   ```
+   * https://github.com/secobau/spring-petclinic
+   ```bash
    project=spring-petclinic
    release=v0.7
    test -f $project.yaml && rm -f $project.yaml
@@ -45,8 +48,11 @@
    
    docker stack rm $project
    test -f $project.yaml && rm -f $project.yaml
+   
 
-   ########################
+   ```
+   * https://github.com/secobau/dockercoins
+   ```bash
    project=dockercoins
    release=v2.0
    test -f $project.yaml && rm -f $project.yaml
@@ -58,7 +64,10 @@
    docker stack rm $project
    test -f $project.yaml && rm -f $project.yaml
    
-   ########################
+
+   ```
+   * https://github.com/secobau/phpinfo
+   ```bash
    project=phpinfo
    release=v1.5
    test -f $project.yaml && rm -f $project.yaml
@@ -69,7 +78,10 @@
    docker stack rm $project
    test -f $project.yaml && rm -f $project.yaml
    
-   ########################
+
+   ```
+   * https://github.com/secobau/nlb
+   ```bash
    project=nlb
    release=v1.3
 

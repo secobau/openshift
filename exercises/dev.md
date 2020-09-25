@@ -51,6 +51,7 @@
    release=v2.0
    test -f $project.yaml && rm -f $project.yaml
    wget https://raw.githubusercontent.com/secobau/$project/$release/etc/docker/swarm/$project.yaml
+   sed -i s/8080/8081/ $project.yaml
    docker stack deploy -c $project.yaml $project
    docker service ls
 

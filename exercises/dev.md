@@ -265,3 +265,50 @@
    
    
    ```
+1. Deploy in Docker Swarm:
+   1. Create the infrastructure in AWS:
+      1. Configure the infrastructure:
+         * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
+      1. Deploy the infrastructure:
+         ```bash
+         ./bin/aws-init-start.sh;
+         ```
+   1. Create the cluster in AWS:
+      1. Configure the cluster:
+         * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
+      1. Deploy the cluster:
+         ```bash
+         ./bin/cluster-init-start.sh;
+         ```
+   1. Deploy the applications in AWS:
+      1. Configure the deployment:
+         * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/app.conf
+      1. Deploy the applications:
+         ```bash
+         ./bin/app-init-start.sh;
+         ```
+1. Deploy in Docker Kubernetes:
+   1. Create the infrastructure in AWS:
+      1. Configure the infrastructure:
+         * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
+      1. Deploy the infrastructure:
+         ```bash
+         ./bin/aws-init-start.sh;
+         ```
+   1. Create the cluster in AWS:
+      1. Configure the cluster:
+         * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
+      1. Deploy the cluster:
+         ```bash
+         ./bin/cluster-init-start.sh;
+         ```
+   1. Deploy the applications in AWS:
+      1. Configure the deployment:
+         * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/app.conf
+      1. Deploy the applications:
+         ```bash
+         ./bin/app-init-start.sh;
+         ```
+   
+
+      

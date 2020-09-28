@@ -55,7 +55,8 @@ git commit -am 'Remove the privateZone and publicZone sections from the DNS conf
 Obtain the Ignition config files:
 ```BASH
 openshift-install-$version create ignition-configs --dir $dir --log-level debug
-git commit -am 'Obtain the Ignition config files'
+git add .
+git commit -m 'Obtain the Ignition config files'
 
 
 ```

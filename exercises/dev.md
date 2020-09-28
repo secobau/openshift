@@ -265,60 +265,26 @@
    
    
    ```
-1. Deploy in Docker Swarm:
+1. Deploy in Docker Swarm or Kubernetes:
    1. Download the installer:
       ```bash
       git clone https://github.com/secobau/docker-aws docker-aws-swarm
       cd docker-aws-swarm
       ```
+   1. Configure the infrastructure:
+      * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
    1. Create the infrastructure in AWS:
-      1. Configure the infrastructure:
-         * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
-      1. Deploy the infrastructure:
-         ```bash
-         nohup ./bin/aws-init-start.sh &
-         ```
-   1. Create the cluster in AWS:
-      1. Configure the cluster:
-         * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
-      1. Deploy the cluster:
-         ```bash
-         nohup ./bin/cluster-init-start.sh &
-         ```
-   1. Deploy the applications in AWS:
-      1. Configure the deployment:
-         * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/app.conf
-      1. Deploy the applications:
-         ```bash
-         nohup ./bin/app-init-start.sh &
-         ```
-1. Deploy in Docker Kubernetes:
-   1. Download the installer:
       ```bash
-      git clone https://github.com/secobau/docker-aws docker-aws-kubernetes
-      cd docker-aws-kubernetes
+      export stack=$( date +%s )
+      nohup ./bin/aws-init-start.sh &
       ```
-   1. Create the infrastructure in AWS:
-      1. Configure the infrastructure:
-         * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
-      1. Deploy the infrastructure:
-         ```bash
-         nohup ./bin/aws-init-start.sh &
-         ```
-   1. Create the cluster in AWS:
-      1. Configure the cluster:
-         * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
-      1. Deploy the cluster:
-         ```bash
-         nohup ./bin/cluster-init-start.sh &
-         ```
-   1. Deploy the applications in AWS:
-      1. Configure the deployment:
-         * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/app.conf
-      1. Deploy the applications:
-         ```bash
-         nohup ./bin/app-init-start.sh &
-         ```
-   
-
-      
+   1. Deploy the cluster in AWS:
+      ```bash
+      nohup ./bin/cluster-init-start.sh &
+      ```
+   1. Configure the deployment:
+      * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/app.conf
+   1. Deploy the application in AWS:
+      ```bash
+      nohup ./bin/app-init-start.sh &
+      ```

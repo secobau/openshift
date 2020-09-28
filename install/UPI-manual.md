@@ -136,10 +136,10 @@ export HostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$
 
 ```
 Creating networking and load balancing components in AWS:
-* [ocp-route53-External.json](opc-route53-External.json)
-* [ocp-route53-External.yaml](opc-route53-External.yaml)
-* [ocp-route53-Internal.json](opc-route53-Internal.json)
-* [ocp-route53-Internal.yaml](opc-route53-Internal.yaml)
+* [ocp-route53-External.json](ocp-route53-External.json)
+* [ocp-route53-External.yaml](ocp-route53-External.yaml)
+* [ocp-route53-Internal.json](ocp-route53-Internal.json)
+* [ocp-route53-Internal.yaml](ocp-route53-Internal.yaml)
 ```BASH
 file=ocp-route53-$Publish.json
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir

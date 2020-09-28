@@ -70,3 +70,10 @@ In order to substitute the self-signed certificate by a valid one:
   ```bash
   Unable to connect to the server: x509: certificate signed by unknown authority
   ```
+  5. To solve the previous issue with the new API certificate:
+  ```bash
+  cp $dir/tls/fullchain.pem $dir/auth
+  sed --in-place s/certificate-authority-data.*$/certificate-authority:' 'fullchain.pem/ $dir/auth/kubeconfig
+  
+  
+  ```

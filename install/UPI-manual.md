@@ -120,6 +120,10 @@ mv openshift-install $HOME/bin/openshift-install-$version
 rm README.md $HOME/bin/openshift-install
 ln -s $HOME/bin/openshift-install-$version $HOME/bin/openshift-install
 
+cd $dir
+git config --global user.name "Your Name"
+git config --global user.email you@example.com
+
 
 ```
 Once the stack creation is completed you can get the following values:

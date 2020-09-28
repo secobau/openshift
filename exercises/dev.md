@@ -276,7 +276,7 @@
          * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
       1. Deploy the infrastructure:
          ```bash
-         ./bin/aws-init-start.sh;
+         nohup ./bin/aws-init-start.sh &
          ```
    1. Create the cluster in AWS:
       1. Configure the cluster:

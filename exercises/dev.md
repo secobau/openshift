@@ -275,7 +275,7 @@
       * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
    1. Create the infrastructure in AWS:
       ```bash
-      export stack=$( date +%s )
+      export stack=docker-aws-$( date +%s )
       nohup ./bin/aws-init-start.sh &
       ```
    1. Deploy the cluster in AWS:

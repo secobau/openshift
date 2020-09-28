@@ -1,3 +1,6 @@
+Instructions to install OCP in a previously created VPC:
+* [VPC Example](etc/aws/network.yaml)
+
 First follow these instructions:
 * [Initial setup](initial.md)
 

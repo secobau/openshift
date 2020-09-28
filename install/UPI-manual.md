@@ -136,10 +136,10 @@ export HostedZoneId="$( aws route53 list-hosted-zones-by-name | jq --arg name "$
 
 ```
 Creating networking and load balancing components in AWS:
-* [ocp-route53-External.json](install/opc-route53-External.json)
-* [ocp-route53-External.yaml](install/opc-route53-External.yaml)
-* [ocp-route53-Internal.json](install/opc-route53-Internal.json)
-* [ocp-route53-Internal.yaml](install/opc-route53-Internal.yaml)
+* [ocp-route53-External.json](opc-route53-External.json)
+* [ocp-route53-External.yaml](opc-route53-External.yaml)
+* [ocp-route53-Internal.json](opc-route53-Internal.json)
+* [ocp-route53-Internal.yaml](opc-route53-Internal.yaml)
 ```BASH
 file=ocp-route53-$Publish.json
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
@@ -180,8 +180,8 @@ fi
 
 ```
 Creating security group and roles in AWS:
-* [ocp-roles.json](install/ocp-roles.json)
-* [ocp-roles.yaml](install/ocp-roles.yaml)
+* [ocp-roles.json](ocp-roles.json)
+* [ocp-roles.yaml](ocp-roles.yaml)
 ```BASH
 file=ocp-roles.json
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/$file --directory-prefix $dir
@@ -208,10 +208,10 @@ export WorkerInstanceProfileName=$( aws cloudformation describe-stacks --stack-n
 
 ```
 Creating the bootstrap node in AWS:
-* [ocp-bootstrap-External.json](install/ocp-bootstrap-External.json)
-* [ocp-bootstrap-External.yaml](install/ocp-bootstrap-External.yaml)
-* [ocp-bootstrap-Internal.json](install/ocp-bootstrap-Internal.json)
-* [ocp-bootstrap-Internal.yaml](install/ocp-bootstrap-Internal.yaml)
+* [ocp-bootstrap-External.json](ocp-bootstrap-External.json)
+* [ocp-bootstrap-External.yaml](ocp-bootstrap-External.yaml)
+* [ocp-bootstrap-Internal.json](ocp-bootstrap-Internal.json)
+* [ocp-bootstrap-Internal.yaml](ocp-bootstrap-Internal.yaml)
 ```BASH
 export RhcosAmi=ami-0754b15d212830477
 export AllowedBootstrapSshCidr=0.0.0.0/0
@@ -248,10 +248,10 @@ cd $dir && git add . && git commit -am 'Creating the bootstrap node in AWS'
 
 ```
 Creating the control plane machines in AWS:
-* [ocp-master-External.json](install/ocp-master-External.json)
-* [ocp-master-External.yaml](install/ocp-master-External.yaml)
-* [ocp-master-Internal.json](install/ocp-master-Internal.json)
-* [ocp-master-Internal.yaml](install/ocp-master-Internal.yaml)
+* [ocp-master-External.json](ocp-master-External.json)
+* [ocp-master-External.yaml](ocp-master-External.yaml)
+* [ocp-master-Internal.json](ocp-master-Internal.json)
+* [ocp-master-Internal.yaml](ocp-master-Internal.yaml)
 ```BASH
 export AutoRegisterDNS=yes
 export PrivateHostedZoneName=$ClusterName.$DomainName
@@ -300,8 +300,8 @@ cd $dir && git commit -am 'Initialize the bootstrap node on AWS with user-provis
 
 ```
 Creating the worker nodes in AWS:
-* [ocp-worker.json](install/ocp-worker.json)
-* [ocp-worker.yaml](install/ocp-worker.yaml)
+* [ocp-worker.json](ocp-worker.json)
+* [ocp-worker.yaml](ocp-worker.yaml)
 ```BASH
 export IgnitionLocation=https://api-int.$PrivateHostedZoneName:22623/config/worker
 export CertificateAuthorities=$( jq .ignition.security.tls.certificateAuthorities[0].source --raw-output $dir/worker.ign )

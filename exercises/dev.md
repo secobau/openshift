@@ -266,6 +266,11 @@
    
    ```
 1. Deploy in Docker Swarm:
+   1. Download the installer:
+      ```bash
+      git clone https://github.com/secobau/docker-aws docker-swarm
+      cd docker-swarm
+      ```
    1. Create the infrastructure in AWS:
       1. Configure the infrastructure:
          * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
@@ -288,6 +293,11 @@
          ./bin/app-init-start.sh;
          ```
 1. Deploy in Docker Kubernetes:
+   1. Download the installer:
+      ```bash
+      git clone https://github.com/secobau/docker-aws docker-kubernetes
+      cd docker-kubernetes
+      ```
    1. Create the infrastructure in AWS:
       1. Configure the infrastructure:
          * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf

@@ -61,8 +61,8 @@ git commit -m 'Obtain the Ignition config files'
 
 ```
 Creating a VPC in AWS:
-* [ocp-vpc.json](install/ocp-vpc.json)
-* [ocp-vpc.yaml](install/ocp-vpc.yaml)
+* [ocp-vpc.json](ocp-vpc.json)
+* [ocp-vpc.yaml](ocp-vpc.yaml)
 ```BASH
 export VpcCidr=10.0.0.0/16
 export AvailabilityZoneCount=3

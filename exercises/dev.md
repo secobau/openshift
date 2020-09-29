@@ -269,6 +269,10 @@
    ```
 1. Deploy in Docker Swarm or Kubernetes:
    * https://github.com/secobau/docker-aws
+   1. Configure the infrastructure:
+      * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
+   1. Configure the deployment:
+      * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/app.conf
    1. Choose Swarm or Kubernetes:
       ```bash
       mode=kubernetes
@@ -281,8 +285,6 @@
       git clone https://github.com/secobau/$repo $repo-$mode
       cd $repo-$mode
       ```
-   1. Configure the infrastructure:
-      * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
    1. Create the infrastructure in AWS:
       ```bash
       ./bin/aws-init-start.sh
@@ -291,8 +293,6 @@
       ```bash
       ./bin/cluster-init-start.sh
       ```
-   1. Configure the deployment:
-      * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/app.conf
    1. Deploy the application in AWS:
       ```bash
       ./bin/app-init-start.sh

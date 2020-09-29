@@ -267,8 +267,7 @@
    
    
    ```
-1. Deploy in Docker Swarm or Kubernetes:
-   * https://github.com/secobau/docker-aws
+1. Deploy in Docker Swarm or Kubernetes: https://github.com/secobau/docker-aws
    1. Configure the infrastructure:
       * https://github.com/secobau/docker-aws/blob/master/etc/conf.d/aws.conf
    1. Configure the deployment:

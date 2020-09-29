@@ -296,3 +296,24 @@
       ```bash
       ./bin/app-init-start.sh
       ```
+   1. You can also manually deploy the application from the Kubernetes master:
+      ```bash
+      git clone https://github.com/$username/$repo
+      cd $repo
+      sudo cp -rv run/* /run
+      for config in $( find /run/configs -type f );
+        do
+          file=$( basename $config );
+          kubectl create configmap $file --from-file $config;
+          sudo rm --force $config;
+        done;
+      for secret in $( find /run/secrets -type f );
+        do
+          file=$( basename $secret );
+          kubectl create secret generic $file --from-file $secret;
+          sudo rm --force $secret;
+        done;
+      kubectl apply -f etc/docker/kubernetes/$repo.yaml
+      
+      
+      ```

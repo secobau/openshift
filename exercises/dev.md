@@ -298,8 +298,8 @@
       ```
    1. You can also manually deploy the application from the Kubernetes master:
       ```bash
-      git clone https://github.com/$username/$repo
-      cd $repo
+      git clone --single-branch --branch $branch_app https://github.com/$username_app/$repository_app
+      cd $repository_app
       sudo cp -rv run/* /run
       for config in $( find /run/configs -type f );
         do
@@ -313,7 +313,7 @@
           kubectl create secret generic $file --from-file $secret;
           sudo rm --force $secret;
         done;
-      kubectl apply -f etc/docker/kubernetes/$repo.yaml
+      kubectl apply -f etc/docker/kubernetes/$app.yaml
       
       
       ```

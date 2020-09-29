@@ -1,5 +1,7 @@
 1. https://github.com/spring-projects/spring-petclinic
+   * https://github.com/secobau/spring-petclinic
 1. https://github.com/dockersamples/dockercoins
+   * https://github.com/secobau/dockercoins
    * https://containers.goffinet.org/images/dockercoins-diagram.svg
 1. https://ap-south-1.console.aws.amazon.com/cloud9
    
@@ -151,7 +153,7 @@
    ```
 1. Troubleshooting Dockercoins   
 1. https://github.com/xwiki-contrib/docker-xwiki
-   * https://github.com/secobau/docker-xwiki/tree/v2.3
+   * https://github.com/secobau/docker-xwiki
 
    In order to deploy xwiki in Red Hat Openshift:
    ```bash

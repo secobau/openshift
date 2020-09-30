@@ -320,3 +320,4 @@
       
       ```
  1. https://manage.openshift.com
+ 1. https://learn.openshift.com/playgrounds/openshift45/

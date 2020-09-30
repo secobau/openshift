@@ -296,8 +296,10 @@
       ```bash
       ./bin/app-init-start.sh
       ```
-   1. You can also manually deploy the application from the Kubernetes master:
+   1. You can now manually deploy the application from the Kubernetes master:
       ```bash
+      username_app=secobau
+      repository_app=nginx
       git clone --single-branch --branch $branch_app https://github.com/$username_app/$repository_app
       cd $repository_app
       sudo cp -rv run/* /run
@@ -313,7 +315,7 @@
           kubectl create secret generic $file --from-file $secret;
           sudo rm --force $secret;
         done;
-      kubectl apply -f etc/docker/kubernetes/$app.yaml
+      kubectl apply -f etc/docker/kubernetes/$repository_app.yaml
       
       
       ```

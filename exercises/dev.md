@@ -33,7 +33,7 @@
    
    
    ``` 
-1. https://labs.play-with-docker.com/
+   1. https://labs.play-with-docker.com/
    ```bash
    docker swarm init
    
@@ -319,4 +319,4 @@
       
       
       ```
-   1. https://manage.openshift.com
+ 1. https://manage.openshift.com

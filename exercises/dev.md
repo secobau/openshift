@@ -1,5 +1,3 @@
-1. https://github.com/spring-projects/spring-petclinic
-   * https://github.com/secobau/spring-petclinic
 1. https://github.com/dockersamples/dockercoins
    * https://github.com/secobau/dockercoins
    * https://containers.goffinet.org/images/dockercoins-diagram.svg
@@ -321,3 +319,5 @@
       ```
  1. https://manage.openshift.com
  1. https://learn.openshift.com/playgrounds/openshift45/
+ 1. https://github.com/spring-projects/spring-petclinic
+

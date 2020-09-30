@@ -95,6 +95,9 @@ export | grep -E " version=| ClusterName=| DomainName=| dir=| Publish=| VpcCidr=
 ```
 Once you have created the new Cloud9 environment you need to disable the AWS managed temporary credentials in AWS Cloud9 settings and upload the previously downloaded project. You will again need to download and install the client installer binaries:
 ```bash
+echo $dir
+echo $version
+
 mv openshift.tar.gz  ..
 cd ..
 gunzip openshift.tar.gz

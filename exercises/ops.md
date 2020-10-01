@@ -12,4 +12,7 @@
 1. https://docs.openshift.com/container-platform/4.5/authentication/using-rbac.html
 1. https://docs.openshift.com/container-platform/4.5/authentication/remove-kubeadmin.html
 1. Modify the SSH public key to access the machines
-1. https://docs.openshift.com/container-platform/4.5/logging/cluster-logging.html
+1. Install cluster logging:
+   1. https://docs.openshift.com/container-platform/4.5/logging/cluster-logging.html
+   1. https://docs.openshift.com/container-platform/4.5/logging/cluster-logging-deploying.html
+   

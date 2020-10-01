@@ -1,7 +1,6 @@
 1. https://github.com/dockersamples/dockercoins
    * https://github.com/secobau/dockercoins
    * https://containers.goffinet.org/images/dockercoins-diagram.svg
-1. https://github.com/secobau/docker/blob/master/Cloud9/README.md
 1. https://ap-south-1.console.aws.amazon.com/cloud9
    
    In order to deploy petclinic and dockercoins in AWS Cloud9:
@@ -320,5 +319,6 @@
       ```
  1. https://manage.openshift.com
  1. https://learn.openshift.com/playgrounds/openshift45/
+ 1. https://github.com/secobau/docker/blob/master/Cloud9/README.md
  1. https://github.com/spring-projects/spring-petclinic
 

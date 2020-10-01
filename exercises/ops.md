@@ -8,3 +8,5 @@
 1. https://docs.openshift.com/container-platform/4.5/backup_and_restore/disaster_recovery/scenario-2-restoring-cluster-state.html
 1. https://docs.openshift.com/container-platform/4.5/security/encrypting-etcd.html
 1. https://docs.openshift.com/container-platform/4.5/authentication/identity_providers/configuring-htpasswd-identity-provider.html
+1. https://docs.openshift.com/container-platform/4.5/authentication/using-rbac.html
+1. https://docs.openshift.com/container-platform/4.5/authentication/remove-kubeadmin.html

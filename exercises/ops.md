@@ -15,4 +15,10 @@
 1. Install cluster logging:
    1. https://docs.openshift.com/container-platform/4.5/logging/cluster-logging.html
    1. https://docs.openshift.com/container-platform/4.5/logging/cluster-logging-deploying.html
+1. Install Service Mesh (Istio):
+   1. https://docs.openshift.com/container-platform/4.5/service_mesh/service_mesh_arch/understanding-ossm.html
+   1. https://docs.openshift.com/container-platform/4.5/service_mesh/service_mesh_install/preparing-ossm-installation.html
+   1. https://docs.openshift.com/container-platform/4.5/service_mesh/service_mesh_install/installing-ossm.html
+   1. https://docs.openshift.com/container-platform/4.5/service_mesh/service_mesh_day_two/prepare-to-deploy-applications-ossm.html
+   1. https://docs.openshift.com/container-platform/4.5/service_mesh/service_mesh_day_two/ossm-example-bookinfo.html
    

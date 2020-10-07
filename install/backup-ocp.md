@@ -9,13 +9,3 @@ done
 
 
 ```
-Alternatively you can run the same task using `oc debug`
-```bash
-for master in $( oc get node | awk /master/'{ print $1 }' )
-do
-  oc debug node/$master -- 'chroot /host ; pwd ; id'
-  #oc debug node/$master -- 'mkdir backup; sudo -E /usr/local/bin/cluster-backup.sh backup'
-done
-
-
-```

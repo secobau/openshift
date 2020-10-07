@@ -1,3 +1,7 @@
+Instructions to install OCP in a previously created VPC:
+* [VPC Example](../etc/aws/network.yaml)
+  * https://github.com/secobau/proxy2aws/blob/master/proxy2aws.png
+
 First follow these instructions:
 * [Initial setup](initial.md)
 

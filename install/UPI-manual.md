@@ -93,10 +93,19 @@ export | grep -E " version=| ClusterName=| DomainName=| dir=| Publish=| VpcCidr=
 
 
 ```
-Once you have created the new Cloud9 environment you need to disable the AWS managed temporary credentials in AWS Cloud9 settings and upload the previously downloaded project. You will again need to download and install the client installer binaries:
+Once you have created the new Cloud9 environment you need to disable the AWS managed temporary credentials in AWS Cloud9 settings and upload the previously downloaded project.
+
+You need to export the values for these variables from the old Cloud9 environment to the new Cloud9 environment:
 ```bash
 echo $dir
 echo $version
+
+
+```
+You will again need to download and install the client installer binaries:
+```bash
+export dir=xxx
+export version=xxx
 
 mv openshift.tar.gz  ..
 cd ..

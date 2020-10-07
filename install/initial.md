@@ -51,7 +51,10 @@ do
   mv $binary $HOME/bin
 done
 mv openshift-install $HOME/bin/openshift-install-$version
-rm README.md $HOME/bin/openshift-install
+file=README.md 
+test -f $file && rm -f $file
+file=$HOME/bin/openshift-install
+test -f $file && rm -f $file
 ln -s $HOME/bin/openshift-install-$version $HOME/bin/openshift-install
 rm $HOME/bin/kubectl && ln -s $HOME/bin/oc $HOME/bin/kubectl    
 

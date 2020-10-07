@@ -97,8 +97,8 @@ Once you have created the new Cloud9 environment you need to disable the AWS man
 
 You need to export the values for these variables from the old Cloud9 environment to the new Cloud9 environment:
 ```bash
-echo $dir
-echo $version
+echo export dir=$dir
+echo export version=$version
 
 
 ```

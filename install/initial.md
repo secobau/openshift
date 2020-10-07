@@ -32,7 +32,7 @@ ssh-add $HOME/.ssh/id_rsa
 ```
 Choose a version number:
 ```bash
-export version=4.5.11
+export version=4.5.13
 
 
 ```

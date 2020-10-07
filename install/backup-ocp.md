@@ -9,3 +9,4 @@ done
 
 
 ```
+Alternatively you can run the same task using `oc debug`

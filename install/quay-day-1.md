@@ -38,5 +38,4 @@
 1. Please customize the following configuration before applying it:
 
    `oc apply -f https://raw.githubusercontent.com/secobau/openshift/master/install/quayEcosystem.yaml`   
-1. https://access.redhat.com/solutions/3680151
-   * [Bucket Policy](bucket-policy.json)
+1. https://access.redhat.com/solutions/3756341

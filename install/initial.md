@@ -16,7 +16,7 @@ location=$project/$path/$file
 
 git clone --single-branch -b $branch https://$domain/$username/$project
 aws cloudformation create-stack --stack-name ocp-${file%.yaml} --template-body file://$location --capabilities CAPABILITY_NAMED_IAM
-rm -rf $project
+rm -rf $project 
 ```
 You will need to obtain a valid public domain name before installing the cluster:
 * https://console.aws.amazon.com/route53/home
@@ -33,7 +33,7 @@ ssh-keygen
 Add the SSH key to the SSH agent. This will allow you to access the cluster nodes through SSH:
 ```bash
 eval "$(ssh-agent -s)"
-ssh-add $HOME/.ssh/id_rsa
+ssh-add $HOME/.ssh/id_rsa 
 ```
 Choose a version number:
 ```bash
@@ -71,12 +71,12 @@ rm $HOME/bin/kubectl && ln -s $HOME/bin/oc $HOME/bin/kubectl
 Now you introduce your choice for the name and domain of the cluster:
 ```bash
 export ClusterName=openshift
-export DomainName=sebastian-colomar.es
+export DomainName=sebastian-colomar.es 
 ```
 Create a directory to place all the configuration files:
 ```bash
 export dir="$HOME/environment/openshift/install/$ClusterName.$DomainName"
-test -d $dir || mkdir -p $dir
+test -d $dir || mkdir -p $dir 
 ```
 Now you create a configuration file template to be later modified:
 ```bash
@@ -88,20 +88,20 @@ cd $dir && git init
 git config --global user.name "Your Name"
 git config --global user.email you@example.com
 git add .
-git commit -m Initial
+git commit -m Initial 
 ```
 The following script will modify the EC2 instance type so as to choose the cheapest possible type but big enough to correctly set up the cluster:
 ```bash
 cd $dir
 wget https://raw.githubusercontent.com/secobau/openshift/master/install/fix-config.sh
 chmod +x fix-config.sh && ./fix-config.sh && rm fix-config.sh
-git commit -am 'Set EC2 instance type'
+git commit -am 'Set EC2 instance type' 
 ```
 If you wish your cluster to be private and not accessible from the external network:
 ```bash
 export Publish=Internal
 sed -i s/External/$Publish/ $dir/install-config.yaml
-git commit -am 'Set Publish value'
+git commit -am 'Set Publish value' 
 ```
 Otherwise set the publish option to be external:
 ```bash

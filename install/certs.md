@@ -55,5 +55,5 @@ In order to substitute the self-signed certificate by a valid one:
   5. To solve the previous issue with the new API certificate:
   ```bash
   cp $dir/tls/fullchain.pem $dir/auth
-  sed --in-place s/certificate-authority-data.*$/certificate-authority:' 'fullchain.pem/ $dir/auth/kubeconfig
+  sed -i s/certificate-authority-data.*$/certificate-authority:' 'fullchain.pem/ $dir/auth/kubeconfig  
   ```

@@ -14,9 +14,10 @@ username=secobau
 
 location=$project/$path/$file
 
-git clone --single-branch --branch $branch https://$domain/$username/$project
+git clone --single-branch -b $branch https://$domain/$username/$project
 wget https://raw.githubusercontent.com/secobau/openshift/master/etc/aws/$file
 aws cloudformation create-stack --stack-name ocp-${file%.yaml} --template-body file://$location --capabilities CAPABILITY_NAMED_IAM
+rm -rf $project
 ```
 You will need to obtain a valid public domain name before installing the cluster:
 * https://console.aws.amazon.com/route53/home
@@ -50,7 +51,7 @@ for mode in $modes
     rm openshift-$mode-linux-$version.tar
   done
 
-mkdir --parents $HOME/bin
+mkdir -p $HOME/bin
 
 binaries="kubectl oc"
 for binary in $binaries
@@ -76,7 +77,7 @@ export DomainName=sebastian-colomar.es
 Create a directory to place all the configuration files:
 ```bash
 export dir="$HOME/environment/openshift/install/$ClusterName.$DomainName"
-test -d $dir || mkdir --parents $dir
+test -d $dir || mkdir -p $dir
 ```
 Now you create a configuration file template to be later modified:
 ```bash
@@ -100,7 +101,7 @@ git commit -am 'Set EC2 instance type'
 If you wish your cluster to be private and not accessible from the external network:
 ```bash
 export Publish=Internal
-sed --in-place s/External/$Publish/ $dir/install-config.yaml
+sed -i s/External/$Publish/ $dir/install-config.yaml
 git commit -am 'Set Publish value'
 ```
 Otherwise set the publish option to be external:

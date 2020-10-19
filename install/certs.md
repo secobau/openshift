@@ -4,12 +4,12 @@ In order to substitute the self-signed certificate by a valid one:
   1. If you need to generate LetsEncrypt certificates you can run this script:
   ```bash
   export EmailAddress=sebastian.colomar@gmail.com
-  docker run -it --rm -v ~/.aws/credentials:/root/.aws/credentials -v ~/environment/certs:/etc/letsencrypt certbot/dns-route53 certonly -n --dns-route53 --agree-tos --email $EmailAddress -d *.apps.$ClusterName.$DomainName
+  docker run -it --rm -v ~/.aws/credentials:/root/.aws/credentials -v ~/environment/certs:/etc/letsencrypt certbot/dns-route53 certonly -n --dns-route53 --agree-tos --email $EmailAddress -d *.apps.$ClusterName.$DomainName  
   ```
   ```bash
   sudo chown $USER. -R ~/environment/certs
   test -d $dir/tls/ || mkdir $dir/tls/
-  cp ~/environment/certs/live/apps.$ClusterName.$DomainName/*.pem $dir/tls/
+  cp ~/environment/certs/live/apps.$ClusterName.$DomainName/*.pem $dir/tls/  
   ```
   2. Create a ConfigMap that includes the certificate authority used to sign the new certificate:
   ```bash
@@ -33,12 +33,12 @@ In order to substitute the self-signed certificate by a valid one:
   1. If you need to generate LetsEncrypt certificates you can run this script:
   ```bash
   export EmailAddress=sebastian.colomar@gmail.com
-  docker run -it --rm -v ~/.aws/credentials:/root/.aws/credentials -v ~/environment/certs:/etc/letsencrypt certbot/dns-route53 certonly -n --dns-route53 --agree-tos --email $EmailAddress -d api.$ClusterName.$DomainName
+  docker run -it --rm -v ~/.aws/credentials:/root/.aws/credentials -v ~/environment/certs:/etc/letsencrypt certbot/dns-route53 certonly -n --dns-route53 --agree-tos --email $EmailAddress -d api.$ClusterName.$DomainName  
   ```
   ```bash
   sudo chown $USER. -R ~/environment/certs
   test -d $dir/tls/ || mkdir $dir/tls/
-  cp ~/environment/certs/live/api.$ClusterName.$DomainName/*.pem $dir/tls/
+  cp ~/environment/certs/live/api.$ClusterName.$DomainName/*.pem $dir/tls/  
   ```
   2. Create a secret that contains the certificate and key in the openshift-config namespace.
   ```bash

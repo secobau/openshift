@@ -15,7 +15,6 @@ username=secobau
 location=$project/$path/$file
 
 git clone --single-branch -b $branch https://$domain/$username/$project
-wget https://raw.githubusercontent.com/secobau/openshift/master/etc/aws/$file
 aws cloudformation create-stack --stack-name ocp-${file%.yaml} --template-body file://$location --capabilities CAPABILITY_NAMED_IAM
 rm -rf $project
 ```

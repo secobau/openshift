@@ -2,3 +2,4 @@
 1. [Create cluster](create.md)
 1. [Customize certificates](certs.md)
 1. [Security Context Constraints](scc.md)
+1. [Destroy cluster](destroy.md)
